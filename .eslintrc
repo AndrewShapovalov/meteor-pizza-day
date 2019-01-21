@@ -18,5 +18,8 @@
   "settings": {
     "import/resolver": "meteor"
   },
-  "rules": {}
+  "rules": {
+    "eol-last": 0,
+    "indent": ["error", 2]
+  }
 }
