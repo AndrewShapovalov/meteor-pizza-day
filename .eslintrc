@@ -1,0 +1,22 @@
+{
+  "env": {
+    "browser": true,
+    "meteor": true,
+    "es6": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "allowImportExportEverywhere": true
+  },
+  "plugins": [
+    "meteor"
+  ],
+  "extends": [
+    "@meteorjs/eslint-config-meteor",
+    "plugin:meteor/recommended"
+  ],
+  "settings": {
+    "import/resolver": "meteor"
+  },
+  "rules": {}
+}
