@@ -12,5 +12,5 @@ if (Meteor.isServer) {
     remove: () => true,
   });
 
-  Meteor.publish(USER_GROUP_ALL, () => UserGroupCollection.find({id: {$ne: 3}}));
+  Meteor.publish(USER_GROUP_ALL, () => UserGroupCollection.find({ id: { $ne: 3 } }));
 }
