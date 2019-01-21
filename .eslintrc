@@ -20,6 +20,10 @@
   },
   "rules": {
     "eol-last": 0,
-    "indent": ["error", 2]
+    "indent": ["error", 2],
+    "linebreak-style": ["off", "windows"],
+    "quotes": ["error", "double"],
+    "import/no-unresolved": 0, // need for use alias paths
+    "import/prefer-default-export": 0
   }
 }

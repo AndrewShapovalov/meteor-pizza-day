@@ -1,3 +1,9 @@
-<template name="App_body">
-  {{> Template.dynamic template=main}}
-</template>
+<body>
+{{> loginButtons}}
+{{#if currentUser}}
+    {{> userGroup}}
+{{/if}}
+</body>
+
+
+

@@ -1,1 +1,2 @@
-import './body.html';
+import "./body.html";
+import "../../components/index";

@@ -18,6 +18,7 @@
   "devDependencies": {
     "@meteorjs/eslint-config-meteor": "^1.0.5",
     "babel-eslint": "^10.0.1",
+    "babel-plugin-module-resolver": "^3.1.2",
     "chai": "^4.1.2",
     "eslint": "^5.12.1",
     "eslint-config-airbnb": "^17.1.0",

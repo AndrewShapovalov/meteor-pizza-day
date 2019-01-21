@@ -1,0 +1,17 @@
+<template name="userGroup">
+    {{#if userGroupCollection}}
+        <ul>
+            {{#each userGroupCollection}}
+                {{> userGroupItem}}
+            {{/each}}
+        </ul>
+    {{else}}
+        <span>There any user group</span>
+    {{/if}}
+</template>
+
+<template name="userGroupItem">
+    <li>
+        <span>{{name}}</span>
+    </li>
+</template>
