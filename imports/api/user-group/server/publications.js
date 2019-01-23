@@ -3,14 +3,14 @@ import { PubAndSubNames } from "constants/index";
 import { Meteor } from "meteor/meteor";
 import UserGroupCollection from "../user-group-collection";
 
-const { USER_GROUP_ALL } = PubAndSubNames;
+const { GET_CURRENT_USER_GROUPS } = PubAndSubNames;
 
-if (Meteor.isServer) {
-  UserGroupCollection.deny({
-    insert: () => true,
-    update: () => true,
-    remove: () => true,
-  });
+UserGroupCollection.deny({
+  insert: () => true,
+  update: () => true,
+  remove: () => true,
+});
 
-  Meteor.publish(USER_GROUP_ALL, () => UserGroupCollection.find({ id: { $ne: 3 } }));
-}
+Meteor.publish(
+  GET_CURRENT_USER_GROUPS, () => UserGroupCollection.find({ ownerId: Meteor.userId() }),
+);

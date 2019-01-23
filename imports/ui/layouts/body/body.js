@@ -1,2 +1,3 @@
 import "./body.html";
-import "../../components/index";
+import "../header/index";
+import "imports/ui/components/index";

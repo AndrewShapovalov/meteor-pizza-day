@@ -1,0 +1,49 @@
+<template name="userGroupList">
+    {{> userGroupTitle}}
+    {{#if userGroupCollection}}
+        <ul class="group_list_container">
+            {{#each userGroupCollection}}
+                {{> userGroupListItem}}
+            {{/each}}
+        </ul>
+    {{else}}
+        <div>There aren't any user group</div>
+    {{/if}}
+</template>
+
+<template name="userGroupTitle">
+    <div class="group_title_container">
+        <span class="group_title_text">List of user group</span>
+        <button class="add_group_button">Add</button>
+    </div>
+    {{> userGroupAddForm}}
+</template>
+
+<template name="userGroupAddForm">
+    <form id="userGroupAddForm" class="add_group_form add_group_form_hidden">
+        <div>
+            <label>Select logo of group:</label>
+            <button class="form_select_logo_btn">+</button>
+        </div>
+        <input id="formFileInput" type="file">
+        <div class="form_name">
+            <label for="formNameInput" class="form_name_label">Group name:</label>
+            <input id="formNameInput" class="form_name_input" type="text" placeholder="Enter group name" />
+        </div>
+        <img class="preview_img_item preview_img_item_hidden" alt="img"/>
+        <span class="form_error_text form_error_text_hidden"></span>
+        <div class="form_submit_btn_container">
+            <button type="submit" class="form_submit_btn">Create</button>
+        </div>
+        <span class="form_close_btn">x</span>
+    </form>
+</template>
+
+<template name="userGroupListItem">
+    <li class="group_list_item">
+        <a  class="group_list_item_link" href="{{pathFor route='GROUP'}}">
+            <img src={{logo}} alt="group_img" class="group_logo_item"/>
+            <span class="group_text_item {{#if isGroupSelected}}group_text_item_active{{/if}}">{{name}}</span>
+        </a>
+    </li>
+</template>

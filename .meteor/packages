@@ -24,3 +24,7 @@ johanbrook:publication-collector  # Test a Meteor publication by collecting its 
 accounts-ui
 accounts-google
 google-config-ui
+jquery
+base64
+iron:router
+twbs:bootstrap

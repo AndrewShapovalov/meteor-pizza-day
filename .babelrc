@@ -3,7 +3,8 @@
     ["module-resolver", {
       "alias": {
         "imports": "/imports",
-        "constants": "/constants"
+        "constants": "/constants",
+        "helpers": "/helpers"
       }
     }]
   ]

@@ -1,0 +1,16 @@
+<template name="group">
+    <ul class="list-group user_list_container">
+        <li class="list-group-item">
+            <div class="user_list_header_container">
+                <span class="user_list_header_title">Added user list</span>
+                {{> dropdown text="+" list=userCollection }}
+            </div>
+        </li>
+        {{#each users}}
+            <li class="list-group-item list-group-item__own">
+                <span>{{name}}</span>
+                <button type="button" class="btn btn-danger btn-sm">-</button>
+            </li>
+        {{/each}}
+    </ul>
+</template>
