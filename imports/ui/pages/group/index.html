@@ -3,13 +3,21 @@
         <li class="list-group-item">
             <div class="user_list_header_container">
                 <span class="user_list_header_title">Added user list</span>
-                {{> dropdown text="+" list=userCollection }}
+                {{#if isAddBtn}}
+                    {{> dropdown list=userCollection }}
+                {{/if}}
             </div>
         </li>
         {{#each users}}
             <li class="list-group-item list-group-item__own">
-                <span>{{name}}</span>
-                <button type="button" class="btn btn-danger btn-sm">-</button>
+                {{#if isCurrentUser}}
+                    <span>You</span>
+                {{else}}
+                    <span>{{name}}</span>
+                {{/if}}
+                {{#if isRemoveBtn}}
+                    <button id="removeUserFromGroupBtn" type="button" class="btn btn-danger btn-sm">-</button>
+                {{/if}}
             </li>
         {{/each}}
     </ul>

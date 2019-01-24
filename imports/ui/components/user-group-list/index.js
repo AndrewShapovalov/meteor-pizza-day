@@ -1,6 +1,10 @@
 import "./index.html";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+// services
+import { API } from "client/services";
+// own helpers
+import { getPathParams } from "helpers";
 // const
 import { MethodNames } from "constants/index";
 import { PubAndSubNames } from "../../../../constants/index";
@@ -9,7 +13,13 @@ import UserGroupCollection from "../../../api/user-group/user-group-collection";
 const { GET_CURRENT_USER_GROUPS } = PubAndSubNames;
 const { CREATE_USER_GROUP } = MethodNames;
 
-Template.userGroupList.onCreated(() => Meteor.subscribe(GET_CURRENT_USER_GROUPS));
+Template.userGroupList.onCreated(() => {
+  try {
+    Meteor.subscribe(GET_CURRENT_USER_GROUPS);
+  } catch (err) {
+    throw new Meteor.Error(err);
+  }
+});
 
 const toggleAddGroupForm = () => {
   const item = $(".add_group_form_hidden")[0];
@@ -41,7 +51,7 @@ Template.userGroupAddForm.events({
       return;
     }
     const reader = new FileReader();
-    reader.onload = function({ target }) {
+    reader.onload = function ({ target }) {
       const res = target.result;
       const base64 = `data:${file.type};base64,${btoa(res)}`;
       $(".preview_img_item").attr("src", base64);
@@ -80,10 +90,10 @@ Template.userGroupAddForm.events({
       }
       togglePreviewImgItem();
       $(".form_name_input").val("");
+      $("#formFileInput").val("");
       toggleAddGroupForm();
     };
-
-    Meteor.call(CREATE_USER_GROUP, dataForSend, createdGroupCallback);
+    API.callMethod(CREATE_USER_GROUP, [dataForSend], createdGroupCallback);
   },
 });
 
@@ -98,6 +108,6 @@ Template.userGroupList.helpers({
 
 Template.userGroupListItem.helpers({
   isGroupSelected() {
-    return Router.current().params._id === this._id;
+    return getPathParams("_id") === this._id;
   },
 });

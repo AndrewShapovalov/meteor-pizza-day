@@ -4,7 +4,8 @@
       "alias": {
         "imports": "/imports",
         "constants": "/constants",
-        "helpers": "/helpers"
+        "helpers": "/helpers",
+        "client": "/client"
       }
     }]
   ]

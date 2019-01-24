@@ -4,6 +4,8 @@ import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { MethodNames } from "constants/index";
 import UserGroupCollection from "imports/api/user-group/user-group-collection";
+// own helpers
+import { getGroupOwnerId } from "helpers";
 
 const {
   GET_GROUP_BY_ID,
@@ -14,15 +16,10 @@ const {
 
 const checkGroupIdAndUser = (groupId, user) => {
   check(user, Object);
-  const id = user._id || user.id;
-  check(id, String);
-  check(user.name, String);
+  const { _id, name } = user;
+  check(_id, String);
+  check(name, String);
   check(groupId, String);
-};
-
-const getGroupOwnerId = (groupId) => {
-  const group = UserGroupCollection.findOne({ _id: groupId });
-  return group && group.ownerId;
 };
 
 Meteor.methods({
@@ -30,7 +27,7 @@ Meteor.methods({
     check(name, String);
     check(logo, String);
 
-    if (!Meteor.userId()) {
+    if (!this.userId) {
       throw new Meteor.Error("not-authorized");
     }
 
@@ -43,7 +40,7 @@ Meteor.methods({
       ownerId: userId,
       users: [
         {
-          id: userId,
+          _id: userId,
           name: currentUser && currentUser.profile.name,
         },
       ],
@@ -57,7 +54,7 @@ Meteor.methods({
 Meteor.methods({
   [ADD_USER_TO_GROUP](groupId, user) {
     checkGroupIdAndUser(groupId, user);
-    if (!Meteor.userId()) {
+    if (!this.userId) {
       throw new Meteor.Error("not-authorized");
     }
     if (getGroupOwnerId(groupId) !== this.userId) {
@@ -70,7 +67,7 @@ Meteor.methods({
 Meteor.methods({
   [REMOVE_USER_FROM_GROUP](groupId, user) {
     // checkGroupIdAndUser(groupId, user); // TODO: add
-    if (!Meteor.userId()) {
+    if (!this.userId) {
       throw new Meteor.Error("not-authorized");
     }
     if (getGroupOwnerId(groupId) !== this.userId) {

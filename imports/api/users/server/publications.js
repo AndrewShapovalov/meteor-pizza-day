@@ -4,4 +4,8 @@ import { Meteor } from "meteor/meteor";
 
 const { GET_USER_LIST } = PubAndSubNames;
 
-Meteor.publish(GET_USER_LIST, () => Meteor.users.find({}));
+try {
+  Meteor.publish(GET_USER_LIST, () => Meteor.users.find({}));
+} catch (err) {
+  throw new Meteor.Error(err);
+}

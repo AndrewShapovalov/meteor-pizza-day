@@ -1,13 +1,21 @@
 <template name="dropdown">
     <div class="dropdown ">
-        <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{text}}
+        <button
+                class="btn btn-success btn-sm dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+        >
+            +
         </button>
         <div style="text-align: center" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {{#if list}}
                 {{#each list}}
-                    <a id="dropdown-item__link" class="dropdown-item" href="#">{{name}}</a>
+                    <a id="dropdown-item__link" class="dropdown-item" href="#">
+                        {{name}}
+                    </a>
                 {{/each}}
             {{else}}
                 <span>None</span>
