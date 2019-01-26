@@ -1,24 +1,73 @@
 <template name="group">
-    <ul class="list-group user_list_container">
-        <li class="list-group-item">
-            <div class="user_list_header_container">
-                <span class="user_list_header_title">Added user list</span>
-                {{#if isAddBtn}}
-                    {{> dropdown list=userCollection }}
-                {{/if}}
-            </div>
-        </li>
-        {{#each users}}
-            <li class="list-group-item list-group-item__own">
-                {{#if isCurrentUser}}
-                    <span>You</span>
-                {{else}}
-                    <span>{{name}}</span>
-                {{/if}}
-                {{#if isRemoveBtn}}
-                    <button id="removeUserFromGroupBtn" type="button" class="btn btn-danger btn-sm">-</button>
-                {{/if}}
-            </li>
-        {{/each}}
-    </ul>
+    <div class="group_header_container">
+        <button type="button" class="btn btn-success btn-sm">
+            <span>Create new event</span>
+        </button>
+        <div>
+            <span>{{name}}</span>
+            <img src={{logo}} alt="group-logo">
+        </div>
+    </div>
+    <!--<div class="divider"></div>-->
+    <div class="content_secondary_container">
+        <div>
+            <ul class="list-group user_list_container">
+                <li class="list-group-item">
+                    <div class="user_list_header_container">
+                        <span class="user_list_header_title">Added user list</span>
+                        {{#if isAddBtn}}
+                            {{> dropdown list=userCollection }}
+                        {{/if}}
+                    </div>
+                </li>
+                {{#each users}}
+                    <li class="list-group-item list-group-item__own">
+                        {{#if isCurrentUser}}
+                            <span>You</span>
+                        {{else}}
+                            <span>{{name}}</span>
+                        {{/if}}
+                        {{#if isRemoveBtn}}
+                            <button id="removeUserFromGroupBtn" type="button" class="btn btn-danger btn-xs">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        {{/if}}
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+        <div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">
+                        <span>Options </span>
+                        <button type="button" class="btn btn-success btn-xs">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each menu}}
+                    <tr>
+                        <td>{{name}}</td>
+                        <td class="tdItem">{{price}}</td>
+                        <td class="tdItem">
+                            <button type="button" class="btn btn-warning btn-xs">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <span>|</span>
+                            <button type="button" class="btn btn-danger btn-xs">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </template>

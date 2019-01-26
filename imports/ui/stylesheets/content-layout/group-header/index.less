@@ -1,0 +1,29 @@
+.group_header_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+  margin-bottom: 10px;
+  & span {
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  & > div {
+    display: flex;
+    align-items: center;
+  }
+
+  & > div > img {
+    margin-left: @gap;
+    border-radius: 10%;
+    width: 30px;
+    height: 30px;
+  }
+
+  & > div > span {
+    font-weight: 600;
+    font-size: 18px;
+  }
+}

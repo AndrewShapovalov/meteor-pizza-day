@@ -1,20 +1,24 @@
-<template name="userGroupList">
-    {{> userGroupTitle}}
-    {{#if userGroupCollection}}
-        <ul class="group_list_container">
-            {{#each userGroupCollection}}
-                {{> userGroupListItem}}
-            {{/each}}
-        </ul>
-    {{else}}
-        <div>There aren't any user group</div>
-    {{/if}}
+<template name="sideBar">
+    <div class="side_bar_container">
+        {{> userGroupTitle}}
+        {{#if userGroupCollection}}
+            <ul class="group_list_container list-group">
+                {{#each userGroupCollection}}
+                    {{> userGroupListItem}}
+                {{/each}}
+            </ul>
+        {{else}}
+            <div>There aren't any user group</div>
+        {{/if}}
+    </div>
 </template>
 
 <template name="userGroupTitle">
     <div class="group_title_container">
         <span class="group_title_text">List of user group</span>
-        <button class="add_group_button">Add</button>
+        <button type="button" class="btn btn-success btn-sm add_group_button">
+            <i class="fa fa-plus"></i>
+        </button>
     </div>
     {{> userGroupAddForm}}
 </template>
@@ -40,10 +44,8 @@
 </template>
 
 <template name="userGroupListItem">
-    <li class="group_list_item">
-        <a  class="group_list_item_link" href="{{pathFor route='GROUP'}}">
-            <img src={{logo}} alt="group_img" class="group_logo_item"/>
-            <span class="group_text_item {{#if isGroupSelected}}group_text_item_active{{/if}}">{{name}}</span>
-        </a>
+    <li class="list-group-item group_list_item {{#if isGroupSelected}}group_list_item_active{{/if}}">
+        <img src={{logo}} alt="group_img" class="group_logo_item"/>
+        <span class="group_text_item">{{name}}</span>
     </li>
 </template>

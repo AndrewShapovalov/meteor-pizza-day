@@ -4,12 +4,8 @@
     {{> header}}
     {{#if currentUser}}
         <div class="primary_container">
-            <div class="side_bar_container">
-                {{> userGroupList}}
-            </div>
-            <div class="content_container">
-                {{> yield}}
-            </div>
+            {{> sideBar}}
+            {{> content}}
         </div>
     {{else}}
         {{> yield}}

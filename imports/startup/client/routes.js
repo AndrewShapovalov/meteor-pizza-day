@@ -2,12 +2,9 @@
 import { Meteor } from "meteor/meteor";
 import "imports/ui/pages/index";
 import "imports/ui/components/index";
-import "../../ui/layouts/body/body.js";
-import UserGroupCollection from "imports/api/user-group/user-group-collection";
-// import { PubAndSubNames } from "constants/index";
-// Set up all routes in the app
-
-// const { GET_USER_LIST, GET_CURRENT_USER_GROUPS, } = PubAndSubNames;
+import "imports/ui/layouts/body/body.js";
+// collections
+import UserGroupCollection from "imports/api/groups/user-group-collection";
 
 Router.route("HOME", {
   path: "/",

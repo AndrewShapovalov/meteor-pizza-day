@@ -1,6 +1,7 @@
-import "./index.html";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+// own
+import "./index.html";
 // services
 import { API } from "client/services";
 // own helpers
@@ -8,12 +9,13 @@ import { getPathParams } from "helpers";
 // const
 import { MethodNames } from "constants/index";
 import { PubAndSubNames } from "../../../../constants/index";
-import UserGroupCollection from "../../../api/user-group/user-group-collection";
+// collections
+import UserGroupCollection from "../../../api/groups/user-group-collection";
 
 const { GET_CURRENT_USER_GROUPS } = PubAndSubNames;
-const { CREATE_USER_GROUP } = MethodNames;
+const { CREATE_GROUP } = MethodNames;
 
-Template.userGroupList.onCreated(() => {
+Template.sideBar.onCreated(() => {
   try {
     Meteor.subscribe(GET_CURRENT_USER_GROUPS);
   } catch (err) {
@@ -93,7 +95,7 @@ Template.userGroupAddForm.events({
       $("#formFileInput").val("");
       toggleAddGroupForm();
     };
-    API.callMethod(CREATE_USER_GROUP, [dataForSend], createdGroupCallback);
+    API.callMethod(CREATE_GROUP, [dataForSend], createdGroupCallback);
   },
 });
 
@@ -102,12 +104,22 @@ Template.userGroupTitle.events({
 });
 
 // HELPERS
-Template.userGroupList.helpers({
+Template.sideBar.helpers({
   userGroupCollection: () => UserGroupCollection.find(),
 });
 
 Template.userGroupListItem.helpers({
+  "click .group_list_item_link"() {
+    console.log("123");
+    Router.go(`/group/${this._id}`);
+  },
   isGroupSelected() {
     return getPathParams("_id") === this._id;
+  },
+});
+
+Template.userGroupListItem.events({
+  "click .group_list_item"() {
+    Router.go(`/group/${this._id}`);
   },
 });

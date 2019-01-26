@@ -11,5 +11,5 @@ export class CallServerMethodService {
     } catch (err) {
       throw new Meteor.Error(err);
     }
-  }
+  };
 }

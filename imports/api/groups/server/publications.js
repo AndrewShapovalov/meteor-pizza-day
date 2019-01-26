@@ -12,10 +12,7 @@ UserGroupCollection.deny({
 });
 
 try {
-  Meteor.publish(
-    GET_CURRENT_USER_GROUPS,
-    () => UserGroupCollection.find({ ownerId: Meteor.userId() }),
-  );
+  Meteor.publish(GET_CURRENT_USER_GROUPS, () => UserGroupCollection.find({ ownerId: Meteor.userId() }));
 } catch (err) {
   throw new Meteor.Error(err);
 }

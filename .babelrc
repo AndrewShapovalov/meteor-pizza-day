@@ -5,7 +5,8 @@
         "imports": "/imports",
         "constants": "/constants",
         "helpers": "/helpers",
-        "client": "/client"
+        "client": "/client",
+        "private": "/private"
       }
     }]
   ]

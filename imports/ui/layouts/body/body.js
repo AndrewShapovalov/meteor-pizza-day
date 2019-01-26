@@ -1,3 +1,4 @@
 import "./body.html";
 import "../header/index";
-import "imports/ui/components/index";
+import "../side-bar/index";
+import "../content/index";

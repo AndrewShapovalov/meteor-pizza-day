@@ -8,14 +8,16 @@ import { API } from "client/services";
 import { getPathParams, getGroupOwnerId } from "helpers/index";
 // const
 import { PubAndSubNames, MethodNames } from "constants/index";
-import UserGroupCollection from "imports/api/user-group/user-group-collection";
+// collections
+import UserGroupCollection from "imports/api/groups/user-group-collection";
 
-const { GET_USER_LIST } = PubAndSubNames;
+const { GET_MENU_LIST, GET_USER_LIST } = PubAndSubNames;
 const { REMOVE_USER_FROM_GROUP, ADD_USER_TO_GROUP } = MethodNames;
 
 Template.group.onCreated(() => {
   try {
     Meteor.subscribe(GET_USER_LIST);
+    Meteor.subscribe(GET_MENU_LIST);
   } catch (err) {
     throw new Meteor.Error(err);
   }
@@ -58,7 +60,7 @@ Template.group.helpers({
     const groupId = getPathParams("_id");
     const ownerId = getGroupOwnerId(groupId);
     const currentUserId = Meteor.userId();
-    return currentUserId === ownerId && currentUserId !== this._id
+    return currentUserId === ownerId && currentUserId !== this._id;
   },
   userCollection: () => {
     const userList = Meteor.users.find().fetch();
@@ -66,7 +68,7 @@ Template.group.helpers({
     const preparedUserList = userList.map(a => ({ _id: a._id, name: a.profile.name }));
     const usersOfCurrentGroup = selectedGroup && selectedGroup.users;
     return preparedUserList.filter(
-      b => !(usersOfCurrentGroup && usersOfCurrentGroup.some(c => c.id === b._id)),
+      b => usersOfCurrentGroup && usersOfCurrentGroup.every(c => c._id !== b._id),
     );
   },
 });

@@ -1,0 +1,57 @@
+[
+  {
+    "_id": "1",
+    "name": "Pan Pizza",
+    "price": "$4.29"
+  },
+  {
+    "_id": "2",
+    "name": "Thin N Crispy",
+    "price": "$10.49"
+  },
+  {
+    "_id": "3",
+    "name": "Skinny Slice",
+    "price": "$10.49"
+  },
+  {
+    "_id": "4",
+    "name": "Stuffed Crust",
+    "price": "$12.49"
+  },
+  {
+    "_id": "5",
+    "name": "Cheesy Bites",
+    "price": "$11.99"
+  },
+  {
+    "_id": "6",
+    "name": "Pepperoni Lover's Pizza",
+    "price": "$4.79"
+  },
+  {
+    "_id": "7",
+    "name": "Ultimate Cheese Lover's Pizza",
+    "price": "$15.49"
+  },
+  {
+    "_id": "8",
+    "name": "Veggie Lover's Pizza ",
+    "price": "$13.56"
+  },
+  {
+    "_id": "9",
+    "name": "Pepsi",
+    "price": "$1.79"
+  },
+  {
+    "_id": "10",
+    "name": "Mountain Dew",
+    "price": "$1.79"
+  },
+  {
+    "_id": "11",
+    "name": "Aquafina",
+    "price": "$2.49"
+  }
+]
