@@ -97,12 +97,15 @@ Meteor.methods({
     if (!this.userId) {
       throw new Meteor.Error("not-authorized");
     }
-    UserGroupCollection.update({ _id: groupId, "menu._id": menuItem._id }, {
-      $set: {
-        "menu.$.name": menuItem.name,
-        "menu.$.price": menuItem.price,
+    UserGroupCollection.update(
+      { _id: groupId, "menu._id": menuItem._id },
+      {
+        $set: {
+          "menu.$.name": menuItem.name,
+          "menu.$.price": menuItem.price,
+        },
       },
-    });
+    );
   },
   [CREATE_MENU_ITEM](groupId, menuItem) {
     check(groupId, String);
@@ -114,14 +117,17 @@ Meteor.methods({
       throw new Meteor.Error("not-authorized");
     }
     menuItem._id = Random.id();
-    UserGroupCollection.update({ _id: groupId }, {
-      $push: {
-        menu: {
-          $each: [menuItem],
-          $position: 0,
+    UserGroupCollection.update(
+      { _id: groupId },
+      {
+        $push: {
+          menu: {
+            $each: [menuItem],
+            $position: 0,
+          },
         },
       },
-    });
+    );
   },
   [REMOVE_MENU_FROM_GROUP](groupId, menuItem) {
     check(groupId, String);

@@ -61,8 +61,9 @@ Template.group.helpers({
     const selectedGroup = UserGroupCollection.findOne({ _id: Router.current().params._id });
     const preparedUserList = userList.map(a => ({ _id: a._id, name: a.profile.name }));
     const usersOfCurrentGroup = selectedGroup && selectedGroup.users;
-    return preparedUserList
-      .filter(b => usersOfCurrentGroup && usersOfCurrentGroup.every(c => c._id !== b._id));
+    return preparedUserList.filter(
+      b => usersOfCurrentGroup && usersOfCurrentGroup.every(c => c._id !== b._id),
+    );
   },
 });
 
@@ -85,7 +86,9 @@ Template.groupHeader.events({
   "click #showEventInputBtn": () => $(".create_event_input_container").removeClass("hidden"),
   "click #cancelEventInputBtn": () => $(".create_event_input_container").addClass("hidden"),
   "change .create_event_input"(event) {
-    const isErrorClass = event.currentTarget.getAttribute("class").includes("create_event_input_error");
+    const isErrorClass = event.currentTarget
+      .getAttribute("class")
+      .includes("create_event_input_error");
     if (isErrorClass) {
       event.currentTarget.classList.remove("create_event_input_error");
     }
@@ -142,21 +145,23 @@ Template.menuTable.events({
 Template.tableRow.events({
   "click #cancelBtn"() {
     const rowId = this._id;
-    $(`#${rowId}`).children().each(function (index) {
-      if (index === 2) {
-        this.querySelector("#saveBtn").classList.add("btn-hidden");
-        this.querySelector("#cancelBtn").classList.add("btn-hidden");
-        this.querySelector("#editBtn").classList.remove("btn-hidden");
-        this.querySelector("#removeBtn").classList.remove("btn-hidden");
-        document.querySelectorAll("#editBtn").forEach(x => x.classList.remove("disabled"));
-        return;
-      }
-      const input = this.querySelector("input");
-      const span = this.querySelector("span");
-      input.classList.add("hidden");
-      input.value = span.innerText;
-      span.classList.remove("hidden");
-    });
+    $(`#${rowId}`)
+      .children()
+      .each(function(index) {
+        if (index === 2) {
+          this.querySelector("#saveBtn").classList.add("btn-hidden");
+          this.querySelector("#cancelBtn").classList.add("btn-hidden");
+          this.querySelector("#editBtn").classList.remove("btn-hidden");
+          this.querySelector("#removeBtn").classList.remove("btn-hidden");
+          document.querySelectorAll("#editBtn").forEach(x => x.classList.remove("disabled"));
+          return;
+        }
+        const input = this.querySelector("input");
+        const span = this.querySelector("span");
+        input.classList.add("hidden");
+        input.value = span.innerText;
+        span.classList.remove("hidden");
+      });
   },
   "click #editBtn"(event) {
     const rowId = this._id;
@@ -166,18 +171,20 @@ Template.tableRow.events({
       return;
     }
 
-    $(`#${rowId}`).children().each(function (index) {
-      if (index === 2) {
-        this.querySelector("#editBtn").classList.add("btn-hidden");
-        this.querySelector("#removeBtn").classList.add("btn-hidden");
-        this.querySelector("#saveBtn").classList.remove("btn-hidden");
-        this.querySelector("#cancelBtn").classList.remove("btn-hidden");
-        document.querySelectorAll("#editBtn").forEach(x => x.classList.add("disabled"));
-        return;
-      }
-      this.querySelector("span").classList.add("hidden");
-      this.querySelector("input").classList.remove("hidden");
-    });
+    $(`#${rowId}`)
+      .children()
+      .each(function(index) {
+        if (index === 2) {
+          this.querySelector("#editBtn").classList.add("btn-hidden");
+          this.querySelector("#removeBtn").classList.add("btn-hidden");
+          this.querySelector("#saveBtn").classList.remove("btn-hidden");
+          this.querySelector("#cancelBtn").classList.remove("btn-hidden");
+          document.querySelectorAll("#editBtn").forEach(x => x.classList.add("disabled"));
+          return;
+        }
+        this.querySelector("span").classList.add("hidden");
+        this.querySelector("input").classList.remove("hidden");
+      });
   },
   "click #removeBtn"() {
     const groupId = getPathParams("_id");
@@ -196,7 +203,7 @@ Template.tableRow.events({
 
     API.callMethod(UPDATE_MENU_ITEM, [groupId, updatedMenuItem]);
 
-    rowChildren.each(function (index) {
+    rowChildren.each(function(index) {
       if (index === 2) {
         this.querySelector("#saveBtn").classList.add("btn-hidden");
         this.querySelector("#cancelBtn").classList.add("btn-hidden");

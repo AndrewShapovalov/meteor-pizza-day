@@ -53,7 +53,7 @@ Template.userGroupAddForm.events({
       return;
     }
     const reader = new FileReader();
-    reader.onload = function ({ target }) {
+    reader.onload = function({ target }) {
       const res = target.result;
       const base64 = `data:${file.type};base64,${btoa(res)}`;
       $(".preview_img_item").attr("src", base64);

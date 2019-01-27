@@ -10,10 +10,7 @@ import UserGroupCollection from "imports/api/groups/user-group-collection";
 import { RouteNames } from "constants/index";
 
 const {
-  EVENT,
-  GROUP,
-  HOME,
-  LOGIN,
+  EVENT, GROUP, HOME, LOGIN,
 } = RouteNames;
 
 Router.route(HOME, {
@@ -63,7 +60,7 @@ Router.route(LOGIN, {
 });
 
 Router.onBeforeAction(
-  function () {
+  function() {
     if (!Meteor.userId()) {
       this.redirect("/login");
     }
