@@ -1,20 +1,13 @@
 <template name="group">
     <div class="group_header_container">
-        <button type="button" class="btn btn-success btn-sm">
-            <span>Create new event</span>
-        </button>
-        <div>
-            <span>{{name}}</span>
-            <img src={{logo}} alt="group-logo">
-        </div>
+        {{> groupHeader}}
     </div>
-    <!--<div class="divider"></div>-->
     <div class="content_secondary_container">
         <div>
             <ul class="list-group user_list_container">
                 <li class="list-group-item">
                     <div class="user_list_header_container">
-                        <span class="user_list_header_title">Added user list</span>
+                        <span class="user_list_header_title">Participants</span>
                         {{#if isAddBtn}}
                             {{> dropdown list=userCollection }}
                         {{/if}}
@@ -37,37 +30,94 @@
             </ul>
         </div>
         <div>
-            <table class="table table-hover table-bordered">
-                <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">
-                        <span>Options </span>
-                        <button type="button" class="btn btn-success btn-xs">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                {{#each menu}}
-                    <tr>
-                        <td>{{name}}</td>
-                        <td class="tdItem">{{price}}</td>
-                        <td class="tdItem">
-                            <button type="button" class="btn btn-warning btn-xs">
-                                <i class="fa fa-pencil"></i>
-                            </button>
-                            <span>|</span>
-                            <button type="button" class="btn btn-danger btn-xs">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                {{/each}}
-                </tbody>
-            </table>
+            {{> menuTable}}
         </div>
     </div>
+</template>
+
+<template name="groupHeader">
+    <div>
+        <button id="showEventInputBtn" type="button" class="btn btn-success btn-xs">
+            <span>Create new event</span>
+        </button>
+        <div class="create_event_input_container hidden">
+            <input type="text" class="create_event_input" placeholder="Enter event name"/>
+            <button style="margin-right: 5px" id="createEventBtn" type="button" class="btn btn-success btn-xs">
+                <i class="fa fa-check"></i>
+            </button>
+            <button id="cancelEventInputBtn" type="button" class="btn btn-danger btn-xs">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div>
+        <span>{{name}}</span>
+        <img src={{logo}} alt="group-logo">
+    </div>
+</template>
+
+<template name="menuTable">
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">
+                <span>Options </span>
+                <button id="addNewRowBtn" type="button" class="btn btn-success btn-xs">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr id="createRow" class="hidden">
+            <td>
+                <input type="text" placeholder="Enter name" class="edit_input">
+            </td>
+            <td>
+                <input type="text" placeholder="Enter price" class="edit_input">
+            </td>
+            <td>
+                <button id="createBtn" type="button" class="btn btn-success btn-xs">
+                    <i class="fa fa-check"></i>
+                </button>
+                <button id="cancelNewRowBtn" type="button" class="btn btn-danger btn-xs">
+                    <i class="fa fa-times"></i>
+                </button>
+            </td>
+        </tr>
+        {{> tableRow menu=menu}}
+        </tbody>
+    </table>
+</template>
+
+<template name="tableRow">
+    {{#each menu}}
+        <tr id={{_id}}>
+            <td>
+                <span>{{name}}</span>
+                <input type="text" value={{name}} class="edit_input hidden">
+            </td>
+            <td>
+                <span>$ {{price}}</span>
+                <input type="text" value={{price}} class="edit_input hidden">
+            </td>
+            <td>
+                <button id="editBtn" type="button" class="btn btn-warning btn-xs">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button id="removeBtn" type="button" class="btn btn-danger btn-xs">
+                    <i class="fa fa-trash"></i>
+                </button>
+
+                <button id="saveBtn" type="button" class="btn btn-success btn-xs btn-hidden">
+                    <i class="fa fa-check"></i>
+                </button>
+                <button id="cancelBtn" type="button" class="btn btn-danger btn-xs btn-hidden">
+                    <i class="fa fa-times"></i>
+                </button>
+            </td>
+        </tr>
+    {{/each}}
 </template>

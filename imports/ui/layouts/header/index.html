@@ -1,7 +1,15 @@
 <template name="header">
     <header class="header">
         {{#if currentUser}}
-            <span>SOME EVENT DROPDONW</span>
+            <div class="btn-group dropright">
+                <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Events
+                    <span class="badge badge-light">0</span>
+                </button>
+                <div class="dropdown-menu">
+                    <!-- Dropdown menu links -->
+                </div>
+            </div>
         {{/if}}
         <div class="loginBtnContainer">
             {{> loginButtons}}

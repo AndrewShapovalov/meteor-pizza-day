@@ -2,6 +2,43 @@ th {
   text-align: center;
 }
 
-.tdItem {
+td {
   text-align: center;
+}
+
+.create_event_input_container {
+  margin-left: @gap;
+  display: flex;
+  align-items: center;
+  border: 1px solid #eeeedd;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.create_event_input {
+  width: 150px;
+  border-radius: 5px;
+  margin-right: @gap;
+
+  &_error {
+    border: 1px solid @required
+  }
+}
+
+.edit_input {
+  border-radius: 5px;
+  text-align: center;
+  width: 90%;
+}
+
+.input_required {
+  border: 1px solid @required;
+}
+
+.btn-hidden {
+  display: none;
+}
+
+.hidden {
+  display: none;
 }

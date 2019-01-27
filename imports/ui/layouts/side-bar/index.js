@@ -105,7 +105,7 @@ Template.userGroupTitle.events({
 
 // HELPERS
 Template.sideBar.helpers({
-  userGroupCollection: () => UserGroupCollection.find(),
+  userGroupCollection: () => UserGroupCollection.find({}, { sort: { createdAt: -1 } }),
 });
 
 Template.userGroupListItem.helpers({
