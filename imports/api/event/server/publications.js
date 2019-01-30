@@ -12,7 +12,9 @@ EventCollection.deny({
 });
 
 try {
-  Meteor.publish(GET_EVENT_LIST, () => EventCollection.find({}));
+  Meteor.publish(GET_EVENT_LIST, () => EventCollection.find(
+    { preparedUsers: { $elemMatch: { _id: Meteor.userId() } } },
+  ));
 } catch (err) {
   throw new Meteor.Error(err);
 }

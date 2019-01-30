@@ -110,7 +110,6 @@ Template.sideBar.helpers({
 
 Template.userGroupListItem.helpers({
   "click .group_list_item_link"() {
-    console.log("123");
     Router.go(`/group/${this._id}`);
   },
   isGroupSelected() {

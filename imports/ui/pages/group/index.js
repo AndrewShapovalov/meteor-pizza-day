@@ -15,6 +15,7 @@ import UserGroupCollection from "imports/api/groups/user-group-collection";
 
 const { GET_MENU_LIST, GET_USER_LIST } = PubAndSubNames;
 const {
+  CREATE_EVENT,
   REMOVE_USER_FROM_GROUP,
   REMOVE_MENU_FROM_GROUP,
   ADD_USER_TO_GROUP,
@@ -23,13 +24,20 @@ const {
 } = MethodNames;
 
 // own helpers
-const cancelNewRowEvent = () => {
+const cancelCreationMenuItem = () => {
   $("#createRow").addClass("hidden");
   $("#addNewRowBtn").removeClass("disabled");
   const rowChildren = $("#createRow").children();
   rowChildren[0].querySelector("input").value = "";
   rowChildren[1].querySelector("input").value = "";
 };
+
+const cancelCreationEvent = () => {
+  $(".create_event_input_container").addClass("hidden");
+  $(".create_event_input").val("");
+};
+
+// end own helpers
 
 Template.group.onCreated(() => {
   try {
@@ -82,9 +90,10 @@ Template.group.events({
   },
 });
 
+// HEADER OF GROUP
 Template.groupHeader.events({
   "click #showEventInputBtn": () => $(".create_event_input_container").removeClass("hidden"),
-  "click #cancelEventInputBtn": () => $(".create_event_input_container").addClass("hidden"),
+  "click #cancelEventInputBtn": cancelCreationEvent,
   "change .create_event_input"(event) {
     const isErrorClass = event.currentTarget
       .getAttribute("class")
@@ -92,6 +101,14 @@ Template.groupHeader.events({
     if (isErrorClass) {
       event.currentTarget.classList.remove("create_event_input_error");
     }
+    const name = event.target.value; // event name
+    const groupId = getPathParams("_id");
+    API.callMethod(CREATE_EVENT, [groupId, name], (err) => {
+      if (err) {
+        return;
+      }
+      cancelCreationEvent();
+    });
   },
   "click #createEventBtn"() {
     const eventInputEl = $(".create_event_input");
@@ -110,7 +127,7 @@ Template.menuTable.events({
       event.currentTarget.classList.remove("input_required");
     }
   },
-  "click #cancelNewRowBtn": cancelNewRowEvent,
+  "click #cancelNewRowBtn": cancelCreationMenuItem,
   "click #addNewRowBtn"(event) {
     const isDisabled = event.currentTarget.getAttribute("class").includes("disabled");
     if (isDisabled) {
@@ -138,7 +155,7 @@ Template.menuTable.events({
     };
 
     API.callMethod(CREATE_MENU_ITEM, [groupId, newMenuItem]);
-    cancelNewRowEvent();
+    cancelCreationMenuItem();
   },
 });
 
@@ -147,7 +164,7 @@ Template.tableRow.events({
     const rowId = this._id;
     $(`#${rowId}`)
       .children()
-      .each(function(index) {
+      .each(function (index) {
         if (index === 2) {
           this.querySelector("#saveBtn").classList.add("btn-hidden");
           this.querySelector("#cancelBtn").classList.add("btn-hidden");
@@ -173,7 +190,7 @@ Template.tableRow.events({
 
     $(`#${rowId}`)
       .children()
-      .each(function(index) {
+      .each(function (index) {
         if (index === 2) {
           this.querySelector("#editBtn").classList.add("btn-hidden");
           this.querySelector("#removeBtn").classList.add("btn-hidden");
@@ -203,7 +220,7 @@ Template.tableRow.events({
 
     API.callMethod(UPDATE_MENU_ITEM, [groupId, updatedMenuItem]);
 
-    rowChildren.each(function(index) {
+    rowChildren.each(function (index) {
       if (index === 2) {
         this.querySelector("#saveBtn").classList.add("btn-hidden");
         this.querySelector("#cancelBtn").classList.add("btn-hidden");

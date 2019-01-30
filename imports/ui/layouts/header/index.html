@@ -1,14 +1,21 @@
 <template name="header">
     <header class="header">
         {{#if currentUser}}
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="btn-group">
+                <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                     Events
-                    <span class="badge badge-light">0</span>
+                    <span class="badge badge-light">{{getEventListLength}}</span>
                 </button>
-                <div class="dropdown-menu">
-                    <!-- Dropdown menu links -->
-                </div>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {{#each eventList}}
+                        <li>
+                            <a href="#">{{name}}</a>
+                        </li>
+                        {{else}}
+                        <span>None</span>
+                    {{/each}}
+                </ul>
             </div>
         {{/if}}
         <div class="loginBtnContainer">
