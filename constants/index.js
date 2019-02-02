@@ -4,4 +4,6 @@ import RouteNames from "./RouteNames";
 import EventStatuses from "./EventStatuses";
 import UserOrderStatuses from "./UserOrderStatuses";
 
-export { UserOrderStatuses, EventStatuses, RouteNames, MethodNames, PubAndSubNames };
+export {
+  UserOrderStatuses, EventStatuses, RouteNames, MethodNames, PubAndSubNames,
+};

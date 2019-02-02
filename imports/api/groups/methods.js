@@ -3,7 +3,7 @@ import { Random } from "meteor/random";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 // const
-import { MethodNames } from "constants/index";
+import { MethodNames } from "constants";
 // collections
 import UserGroupCollection from "imports/api/groups/user-group-collection";
 // own helpers

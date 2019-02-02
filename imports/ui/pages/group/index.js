@@ -39,6 +39,7 @@ const cancelCreationEvent = () => {
 
 // end own helpers
 
+// GROUP
 Template.group.onCreated(() => {
   try {
     Meteor.subscribe(GET_USER_LIST);
@@ -48,7 +49,8 @@ Template.group.onCreated(() => {
   }
 });
 
-Template.group.helpers({
+// GROUP USER LIST
+Template.groupUserList.helpers({
   isCurrentUser() {
     return this._id === Meteor.userId();
   },
@@ -75,7 +77,7 @@ Template.group.helpers({
   },
 });
 
-Template.group.events({
+Template.groupUserList.events({
   "click #removeUserFromGroupBtn"(event) {
     event.preventDefault();
     const groupId = getPathParams("_id");
@@ -120,7 +122,7 @@ Template.groupHeader.events({
 });
 
 // MENU TABLE
-Template.menuTable.events({
+Template.groupMenuTable.events({
   "change input"(event) {
     const isErrorClass = event.currentTarget.getAttribute("class").includes("input_required");
     if (isErrorClass) {
@@ -159,12 +161,13 @@ Template.menuTable.events({
   },
 });
 
-Template.tableRow.events({
+// MENU TABLE ROW
+Template.menuTableRow.events({
   "click #cancelBtn"() {
     const rowId = this._id;
     $(`#${rowId}`)
       .children()
-      .each(function (index) {
+      .each(function(index) {
         if (index === 2) {
           this.querySelector("#saveBtn").classList.add("btn-hidden");
           this.querySelector("#cancelBtn").classList.add("btn-hidden");
@@ -190,7 +193,7 @@ Template.tableRow.events({
 
     $(`#${rowId}`)
       .children()
-      .each(function (index) {
+      .each(function(index) {
         if (index === 2) {
           this.querySelector("#editBtn").classList.add("btn-hidden");
           this.querySelector("#removeBtn").classList.add("btn-hidden");
@@ -220,7 +223,7 @@ Template.tableRow.events({
 
     API.callMethod(UPDATE_MENU_ITEM, [groupId, updatedMenuItem]);
 
-    rowChildren.each(function (index) {
+    rowChildren.each(function(index) {
       if (index === 2) {
         this.querySelector("#saveBtn").classList.add("btn-hidden");
         this.querySelector("#cancelBtn").classList.add("btn-hidden");

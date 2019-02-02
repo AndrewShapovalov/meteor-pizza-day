@@ -1,3 +1,99 @@
 <template name="event">
-    <div>event</div>
+    {{> eventHeader}}
+    <div class="event_tables_container">
+        {{> eventUserList}}
+        {{> eventMenuList}}
+    </div>
+    <div class="event_options_container">
+        {{> confirmButton}}
+        {{> sendOrderButton}}
+    </div>
+</template>
+
+<template name="eventHeader">
+    <div class="event_header">
+        <div class="event_header_left_container">
+            <span>Status:</span>
+            <span>{{getEventStatus}}</span>
+        </div>
+        <div class="event_header_right_container">
+            <span>{{name}}</span>
+            <span>{{getEventCreatedDate}}</span>
+        </div>
+    </div>
+</template>
+
+<template name="eventUserList">
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Order status {{getOrderedQuantity}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each users}}
+            <tr>
+                <td>
+                    <span>{{getUserName}}</span>
+                </td>
+                <td class="event_user_order_status">
+                    <span class="
+                    {{#if getUserOrderStatusColor}}
+                    event_user_confirmed_status
+                    {{else}}
+                    event_user_unconfirmed_status
+                    {{/if}}
+                    ">
+                        {{getUserOrderStatus}}
+                    </span>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</template>
+
+<template name="eventMenuList">
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each getMenuListForCurrentUser}}
+            <tr>
+                <td>
+                    <span>{{name}}</span>
+                </td>
+                <td class="event_menu_price">
+                    <span>{{price}}</span>
+                </td>
+                <td class="event_menu_amount">
+                    <input id={{_id}} type="number" class="form-control" value={{amount}} min="0">
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</template>
+
+<template name="confirmButton">
+    {{#if isUserOrderStatusUnconfirmed}}
+        <button id="eventMenuConfirmBtn" type="button" class="btn btn-success btn-sm">
+            <span>Confirm order</span>
+        </button>
+    {{/if}}
+</template>
+
+<template name="sendOrderButton">
+    {{#if isEventStatusOrdered}}
+        <button id="eventMenuSendOrderBtn" type="button"
+                class="btn btn-success btn-sm">
+            <span>Send order</span>
+        </button>
+    {{/if}}
 </template>

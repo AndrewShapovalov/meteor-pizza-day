@@ -1,6 +1,7 @@
 import "./index.html";
 import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
+
 // collections
 import { EventCollection } from "imports/api/event/event-collection";
 // const
@@ -16,6 +17,7 @@ Template.header.onCreated(() => {
   }
 });
 
+// HELPERS
 Template.header.helpers({
   getEventListLength: () => EventCollection.find({}).count(),
   eventList: () => EventCollection.find({}),

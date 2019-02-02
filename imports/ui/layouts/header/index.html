@@ -2,17 +2,22 @@
     <header class="header">
         {{#if currentUser}}
             <div class="btn-group">
-                <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                <button
+                        type="button"
+                        class="btn btn-warning btn-xs dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                >
                     Events
                     <span class="badge badge-light">{{getEventListLength}}</span>
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <ul style="text-align: center" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     {{#each eventList}}
-                        <li>
-                            <a href="#">{{name}}</a>
+                        <li class="header-dropdown-list-item">
+                            <a href="{{pathFor route='EVENT'}}">{{name}}</a>
                         </li>
-                        {{else}}
+                    {{else}}
                         <span>None</span>
                     {{/each}}
                 </ul>
