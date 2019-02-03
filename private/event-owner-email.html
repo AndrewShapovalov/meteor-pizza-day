@@ -1,0 +1,103 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>EventOwnerEmail</title>
+    <style>
+        h1, h3 {
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            padding-top: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        h3 {
+            padding-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .table-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            text-align: center;
+        }
+
+        .table-last-row td {
+            border: none;
+        }
+
+        .table-last-row td > span {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<h1>Created event day - {{eventName}}</h1>
+<h2>Created date: {{eventCreatedDate}}</h2>
+<h3>You ordered:</h3>
+<div class="table-container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price $</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each orderedMenu}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{price}}</td>
+                <td>{{amount}}</td>
+            </tr>
+        {{/each}}
+        <tr class="table-last-row">
+            <td colspan="3"><span>Total:</span> ${{orderedTotalPrice}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<h3>Summary order:</h3>
+<div class="table-container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price $</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each summaryOrderedMenu}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{price}}</td>
+                <td>{{amount}}</td>
+            </tr>
+        {{/each}}
+        <tr class="table-last-row">
+            <td colspan="3"><span>Summary order total price:</span> ${{summaryOrderTotalPrice}}, <span>Ordered quantity:</span>
+                {{orderedQuantity}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

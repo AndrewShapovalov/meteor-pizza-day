@@ -1,6 +1,10 @@
 /* eslint meteor/audit-argument-checks: 0, no-param-reassign: 0 */
+import { Email } from "meteor/email";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
+import { SSR } from "meteor/meteorhacks:ssr";
+// helpers
+import { getFriendlyDate } from "helpers";
 // const
 import { MethodNames, EventStatuses, UserOrderStatuses } from "constants/index";
 // collection
@@ -11,7 +15,40 @@ const { CREATE_EVENT, CONFIRM_EVENT_MENU, SEND_ORDER } = MethodNames;
 const { ORDERING, ORDERED, DELIVERING } = EventStatuses;
 const { UNCONFIRMED, CONFIRMED } = UserOrderStatuses;
 
+// own helpers
+const sendEmail = async (to, html, content) => {
+  const from = "pizzadayemail@gmail.com";
+  const subject = "Pizza Event Day!";
+  SSR.compileTemplate("email-content", Assets.getText(html));
+  const htmlForSend = SSR.render("email-content", content);
+  // this.unblock();
+  Email.send({
+    to,
+    from,
+    subject,
+    html: htmlForSend,
+  });
+};
+
+const getOrderedMenu = (event, participantId) => {
+  const menu = event.users.find(x => x._id === participantId).menu;
+  return menu.filter(x => Number(x.amount) > 0);
+};
+
+const getOrderedTotalPrice = menu => menu
+  .reduce((sum, menu) => {
+    const price = Number(menu.price);
+    const amount = Number(menu.amount);
+    return sum + price * amount;
+  }, 0)
+  .toFixed(2);
+
+const getParticipantEmail = participantId => Meteor.users.findOne({ _id: participantId }).services.google.email;
+
 Meteor.methods({
+  logToConsole(msg) {
+    console.log(msg);
+  },
   [CREATE_EVENT](groupId, name) {
     check(groupId, String);
     check(name, String);
@@ -36,6 +73,22 @@ Meteor.methods({
 
     EventCollection.insert(dataForStorage);
   },
+  [SEND_ORDER](eventId) {
+    check(eventId, String);
+
+    if (!this.userId) {
+      throw new Meteor.Error("not-authorized");
+    }
+
+    EventCollection.update(
+      { _id: eventId },
+      {
+        $set: {
+          status: DELIVERING,
+        },
+      },
+    );
+  },
   [CONFIRM_EVENT_MENU](eventId, updatedMenu) {
     check(eventId, String);
     check(updatedMenu, Array);
@@ -51,41 +104,85 @@ Meteor.methods({
           "users.$.menu": updatedMenu,
           "users.$.orderStatus": CONFIRMED,
         },
-      }
+      },
     );
 
     let isAllParticipantsOrdered = false;
 
-    EventCollection.find({ _id: eventId }).forEach(function (event) {
-      isAllParticipantsOrdered =  event.users.every(x => x.orderStatus === CONFIRMED)
+    EventCollection.find({ _id: eventId }).forEach(function(event) {
+      isAllParticipantsOrdered = event.users.every(x => x.orderStatus === CONFIRMED);
     });
 
-    // if all participants confirm order - event status become ORDERED
-    if (isAllParticipantsOrdered) {
-      EventCollection.update(
-        { _id: eventId, },
-        {
-          $set: {
-            "status": ORDERED,
-          },
-        }
+    const event = EventCollection.findOne({ _id: eventId });
+    const eventName = event.name;
+    const eventCreatorId = event.creatorId;
+    const eventCreatedDate = getFriendlyDate(event.createdDate);
+
+    const sendEmailToEventCreator = async () => {
+      const eventCreatorEmail = getParticipantEmail(eventCreatorId);
+      const orderedMenu = getOrderedMenu(event, eventCreatorId);
+      const orderedTotalPrice = getOrderedTotalPrice(orderedMenu);
+      const menuList = UserGroupCollection.findOne({ _id: event.groupId }).menu.slice();
+
+      event.users.forEach((user) => {
+        user.menu.forEach((menu) => {
+          const index = menuList.findIndex(x => x._id === menu._id);
+          menuList[index].amount += Number(menu.amount);
+        });
+      });
+
+      const summaryOrderedMenu = menuList.filter(x => Number(x.amount) > 0);
+      const summaryOrderTotalPrice = getOrderedTotalPrice(summaryOrderedMenu);
+      const orderedQuantity = summaryOrderedMenu.reduce(
+        (sum, menu) => sum + Number(menu.amount),
+        0,
       );
-    }
-  },
-  [SEND_ORDER](eventId) {
-    check(eventId, String);
 
-    if (!this.userId) {
-      throw new Meteor.Error("not-authorized");
-    }
+      const content = {
+        eventName,
+        eventCreatedDate,
+        orderedTotalPrice,
+        orderedMenu,
+        orderedQuantity,
+        summaryOrderedMenu,
+        summaryOrderTotalPrice,
+      };
+      return sendEmail(eventCreatorEmail, "event-owner-email.html", content);
+    };
 
-    EventCollection.update(
-      { _id: eventId, },
-      {
-        $set: {
-          "status": DELIVERING,
-        },
+    const sendEmailToEveryParticipants = async () => {
+      event.users.forEach((participant) => {
+        if (participant._id !== eventCreatorId) {
+          const participantEmail = getParticipantEmail(participant._id);
+          const orderedMenu = participant.menu.filter(x => Number(x.amount) > 0);
+          const orderedTotalPrice = getOrderedTotalPrice(orderedMenu);
+          const content = {
+            eventName,
+            eventCreatedDate,
+            orderedTotalPrice,
+            orderedMenu,
+          };
+          return sendEmail(participantEmail, "event-participants-email.html", content);
+        }
+        sendEmailToEventCreator();
+      });
+    };
+
+    if (isAllParticipantsOrdered) {
+      try {
+        // if all participants confirm order - event status become ORDERED
+        EventCollection.update(
+          { _id: eventId },
+          {
+            $set: {
+              status: ORDERED,
+            },
+          },
+        );
+        sendEmailToEveryParticipants();
+      } catch (err) {
+        throw new Meteor.Error(err);
       }
-    );
+    }
   },
 });

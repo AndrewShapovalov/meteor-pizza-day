@@ -30,6 +30,7 @@ ecmascript-runtime@0.7.0
 ecmascript-runtime-client@0.8.0
 ecmascript-runtime-server@0.7.1
 ejson@1.1.0
+email@1.2.3
 es5-shim@4.8.0
 fetch@0.1.0
 geojson-utils@1.0.10
@@ -60,6 +61,7 @@ logging@1.1.20
 meteor@1.9.2
 meteor-base@1.4.0
 meteorhacks:picker@1.0.3
+meteorhacks:ssr@2.2.0
 meteortesting:browser-tests@1.0.0
 meteortesting:mocha@1.1.1
 meteortesting:mocha-core@1.0.1

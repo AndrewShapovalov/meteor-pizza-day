@@ -2,7 +2,9 @@ import "./index.html";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 // own helpers
-import { getEventStatus, getPathParams, getUserOrederStatus } from "helpers";
+import {
+  getFriendlyDate, getEventStatus, getPathParams, getUserOrderStatus,
+} from "helpers";
 // services
 import { API } from "client/services";
 // const
@@ -16,42 +18,37 @@ const { CONFIRM_EVENT_MENU, SEND_ORDER } = MethodNames;
 // HEADER
 Template.eventHeader.helpers({
   getEventStatus() {
-    return getEventStatus(this.status)
+    return getEventStatus(this.status);
   },
   getEventCreatedDate() {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
     if (this.createdDate) {
-      return this.createdDate.toLocaleString("en-US", options)
+      return getFriendlyDate(this.createdDate);
     }
-  }
+  },
 });
 
 // USERS
 Template.eventUserList.helpers({
   getUserName() {
     if (Meteor.userId() === this._id) {
-      return "You"
+      return "You";
     }
-    return this.name
+    return this.name;
   },
   getUserOrderStatus() {
-    return getUserOrederStatus(this.orderStatus)
+    return getUserOrderStatus(this.orderStatus);
   },
   getUserOrderStatusColor() {
-    return this.orderStatus === CONFIRMED
+    return this.orderStatus === CONFIRMED;
   },
   getOrderedQuantity() {
     if (this.users) {
       const userListLength = this.users.length;
-      const confirmedOrdersUserListLength = this.users.filter(x => x.orderStatus === CONFIRMED).length;
-      return `(${confirmedOrdersUserListLength} of ${userListLength})`
+      const confirmedOrdersUserListLength = this.users.filter(x => x.orderStatus === CONFIRMED)
+        .length;
+      return `(${confirmedOrdersUserListLength} of ${userListLength})`;
     }
-
-  }
+  },
 });
 
 // MENU
@@ -62,8 +59,8 @@ Template.eventMenuList.helpers({
       const user = this.users.find(x => x._id === currentUserId);
       return user.menu;
     }
-    return []
-  }
+    return [];
+  },
 });
 
 // CONFIRM BTN
@@ -73,7 +70,7 @@ Template.confirmButton.helpers({
       const currentUser = this.users.find(x => x._id === Meteor.userId());
       return currentUser.orderStatus === UNCONFIRMED;
     }
-  }
+  },
 });
 
 Template.confirmButton.events({
@@ -81,16 +78,16 @@ Template.confirmButton.events({
     const currentUser = this.users.find(x => x._id === Meteor.userId());
     const menu = currentUser.menu;
 
-    const updatedMenu = menu.map(x => {
+    const updatedMenu = menu.map((x) => {
       const menuId = x._id;
       const amountValue = $(`#${menuId}`).val();
-      return ({ ...x, amount: amountValue });
+      return { ...x, amount: amountValue };
     });
 
     const eventId = getPathParams("_id");
 
     API.callMethod(CONFIRM_EVENT_MENU, [eventId, updatedMenu]);
-  }
+  },
 });
 
 // SEND ORDER BTN
@@ -98,12 +95,12 @@ Template.sendOrderButton.helpers({
   isEventStatusOrdered() {
     // show 'send order' btn if event status === ORDERED and current user created this event
     return this.status === ORDERED && this.creatorId === Meteor.userId();
-  }
+  },
 });
 
 Template.sendOrderButton.events({
   "click #eventMenuSendOrderBtn"(event) {
     const eventId = getPathParams("_id");
     API.callMethod(SEND_ORDER, [eventId]);
-  }
+  },
 });

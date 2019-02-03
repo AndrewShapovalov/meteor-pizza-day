@@ -29,3 +29,5 @@ base64
 iron:router
 twbs:bootstrap
 natestrauser:font-awesome
+email
+meteorhacks:ssr
