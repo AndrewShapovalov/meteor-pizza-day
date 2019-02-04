@@ -5,7 +5,10 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 // own helpers
 import {
-  getFriendlyDate, getEventStatus, getPathParams, getUserOrderStatus,
+  getFriendlyDate,
+  getEventStatus,
+  getPathParams,
+  getUserOrderStatus,
 } from "imports/startup/both/helpers";
 // collections
 import { EventCollection } from "imports/api/event/event-collection";
