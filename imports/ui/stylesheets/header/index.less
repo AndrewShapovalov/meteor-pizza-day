@@ -1,9 +1,25 @@
 .header {
-  padding: @gap;
+  padding: @doubleGab @gap;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid black;
+  border-bottom: 1.5px solid  rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  & > div:first-child {
+    display: flex;
+    align-items: center;
+  }
+  & > span {
+    letter-spacing: 2px;
+    font-style: italic;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
+
+.home_btn {
+  margin-right: @gap;
 }
 
 .loginBtnContainer {

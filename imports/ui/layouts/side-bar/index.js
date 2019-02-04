@@ -1,9 +1,10 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+// import {} from "meteor/chrismbeckett:toastr";
 // own
 import "./index.html";
 // services
-import { API } from "client/services";
+import { API, Notification } from "client/services";
 // own helpers
 import { getPathParams } from "helpers";
 // const
@@ -13,7 +14,9 @@ import { PubAndSubNames } from "../../../../constants/index";
 import UserGroupCollection from "../../../api/groups/user-group-collection";
 
 const { GET_CURRENT_USER_GROUPS } = PubAndSubNames;
-const { CREATE_GROUP } = MethodNames;
+const { CREATE_GROUP, REMOVE_GROUP } = MethodNames;
+
+const { error, success } = Notification;
 
 Template.sideBar.onCreated(() => {
   try {
@@ -31,14 +34,14 @@ const toggleAddGroupForm = () => {
     $("#userGroupAddForm").addClass("add_group_form_hidden");
   }
 };
-const togglePreviewImgItem = () => {
+/* const togglePreviewImgItem = () => {
   const item = $(".preview_img_item_hidden")[0];
   if (item) {
     $(".preview_img_item").removeClass("preview_img_item_hidden");
   } else {
     $(".preview_img_item").addClass("preview_img_item_hidden");
   }
-};
+}; */
 
 // EVENTS
 Template.userGroupAddForm.events({
@@ -53,11 +56,12 @@ Template.userGroupAddForm.events({
       return;
     }
     const reader = new FileReader();
-    reader.onload = function({ target }) {
+    reader.onload = function ({ target }) {
       const res = target.result;
       const base64 = `data:${file.type};base64,${btoa(res)}`;
-      $(".preview_img_item").attr("src", base64);
-      togglePreviewImgItem();
+      const previewImgItem = $(".preview_img_item");
+      previewImgItem.attr("src", base64);
+      previewImgItem.removeClass("preview_img_item_hidden");
     };
     reader.readAsBinaryString(file);
   },
@@ -88,9 +92,15 @@ Template.userGroupAddForm.events({
 
     const createdGroupCallback = (err) => {
       if (err) {
+        const { reason } = err;
+        if (reason) {
+          error(reason);
+          return;
+        }
         throw new Meteor.Error(err);
       }
-      togglePreviewImgItem();
+      success(null, "Group created!");
+      $(".preview_img_item").addClass("preview_img_item_hidden");
       $(".form_name_input").val("");
       $("#formFileInput").val("");
       toggleAddGroupForm();
@@ -115,10 +125,23 @@ Template.userGroupListItem.helpers({
   isGroupSelected() {
     return getPathParams("_id") === this._id;
   },
+  isOwnerGroup() {
+    return this.ownerId === Meteor.userId();
+  },
 });
 
 Template.userGroupListItem.events({
   "click .group_list_item"() {
     Router.go(`/group/${this._id}`);
+  },
+  "click .remove_group_btn_container"() {
+    const groupId = getPathParams("_id");
+    API.callMethod(REMOVE_GROUP, [groupId], (err) => {
+      if (err) {
+        return;
+      }
+      Router.go("/");
+      success(null, "Group removed!");
+    });
   },
 });

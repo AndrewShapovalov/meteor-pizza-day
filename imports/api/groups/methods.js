@@ -3,21 +3,25 @@ import { Random } from "meteor/random";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 // const
-import { MethodNames } from "constants";
+import { MethodNames, ErrorReasons } from "constants";
 // collections
 import UserGroupCollection from "imports/api/groups/user-group-collection";
+import { EventCollection } from "imports/api/event/event-collection";
 // own helpers
 import { getGroupOwnerId } from "helpers";
 
 const {
   GET_GROUP_BY_ID,
   CREATE_GROUP,
+  REMOVE_GROUP,
   ADD_USER_TO_GROUP,
   CREATE_MENU_ITEM,
   UPDATE_MENU_ITEM,
   REMOVE_MENU_FROM_GROUP,
   REMOVE_USER_FROM_GROUP,
 } = MethodNames;
+
+const { GROUP_NAME_IS_ALREADY_EXISTS } = ErrorReasons;
 
 const checkUser = (user) => {
   check(user, Object);
@@ -35,9 +39,32 @@ const checkMenuItem = (menuItem) => {
 };
 
 Meteor.methods({
+  toConsole(str) {
+    console.log(str);
+  },
   [GET_GROUP_BY_ID](groupId) {
     check(groupId, String);
     return UserGroupCollection.find({ _id: groupId });
+  },
+  [REMOVE_GROUP](groupId) {
+    check(groupId, String);
+
+    if (!this.userId) {
+      throw new Meteor.Error("not-authorized");
+    }
+
+    if (getGroupOwnerId(groupId) !== this.userId) {
+      throw new Meteor.Error("You aren't owner of the group");
+    }
+
+    UserGroupCollection.remove({ _id: groupId });
+
+    EventCollection.find({}).forEach(function(event) {
+      const eventId = event._id;
+      if (event.groupId === groupId) {
+        EventCollection.remove({ _id: eventId });
+      }
+    });
   },
   [CREATE_GROUP]({ name, logo }) {
     check(name, String);
@@ -45,6 +72,14 @@ Meteor.methods({
 
     if (!this.userId) {
       throw new Meteor.Error("not-authorized");
+    }
+
+    const isGroupAlreadyExistsForCurrentUser = UserGroupCollection.findOne({
+      name,
+      ownerId: this.userId,
+    });
+    if (isGroupAlreadyExistsForCurrentUser) {
+      throw new Meteor.Error("Name has already exists!", GROUP_NAME_IS_ALREADY_EXISTS);
     }
 
     const menu = JSON.parse(Assets.getText("menu.json"));

@@ -3,6 +3,8 @@
 @import "./side-bar-layout/index";
 @import "./content-layout/index";
 
+@import "./home-page/index";
+
 body, html  {
   padding: 0;
   margin: 0;
@@ -10,8 +12,13 @@ body, html  {
   width: 100%;
 }
 
+.app_background {
+  background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%,rgba(0,0,0,0.5) 70%), url("img/main-background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 .primary_container {
   display: flex;
   flex: 1;
-  height: 100%;
 }

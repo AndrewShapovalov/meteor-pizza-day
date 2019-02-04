@@ -56,7 +56,7 @@ Router.route(EVENT, {
 
 Router.route(LOGIN, {
   path: "/login",
-  template: "auth-page",
+  template: "authPage",
 });
 
 Router.onBeforeAction(
@@ -69,7 +69,7 @@ Router.onBeforeAction(
     }
     this.render();
   },
-  { except: ["auth-page"] },
+  { except: ["authPage"] },
 );
 
 Router.configure({

@@ -31,6 +31,7 @@
   border-radius: 5px;
   background-color: white;
   padding: 10px;
+  margin-bottom: 10px;
   &_hidden {
     display: none;
   }
@@ -40,6 +41,7 @@
 
 .form_name {
   .flexContainer;
+  align-items: center;
   padding: @gap 0 @gap 0;
   &_label {
     margin-right: @gap;
@@ -54,7 +56,9 @@
   justify-content: flex-end;
 }
 
-.form_submit_btn {}
+.form_submit_btn {
+  margin-top: 5px;
+}
 
 .form_close_btn {
   position: absolute;
@@ -96,14 +100,21 @@
 
 .group_list_item {
   //.flexContainer;
+  display: flex;
+  justify-content: space-between;
   padding: @gap;
   cursor: pointer;
   &:hover {
-    opacity: 0.5;
+    background-color: #f5f5f0;
   }
   &_active {
     background-color: #ebebe0;
   }
+}
+
+.remove_group_btn_container {
+  display: flex;
+  align-items: center;
 }
 
 .group_list_item_link {

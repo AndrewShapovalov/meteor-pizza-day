@@ -1,3 +1,5 @@
+/* eslint consistent-return: 0 */
+
 import "./index.html";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
@@ -5,15 +7,18 @@ import { Template } from "meteor/templating";
 import {
   getFriendlyDate, getEventStatus, getPathParams, getUserOrderStatus,
 } from "helpers";
+// collections
+import { EventCollection } from "imports/api/event/event-collection";
 // services
-import { API } from "client/services";
+import { API, Notification } from "client/services";
 // const
-import { UserOrderStatuses, EventStatuses } from "constants";
-import { MethodNames } from "constants";
+import { MethodNames, UserOrderStatuses, EventStatuses } from "constants";
+
+const { success } = Notification;
 
 const { CONFIRMED, UNCONFIRMED } = UserOrderStatuses;
 const { ORDERED } = EventStatuses;
-const { CONFIRM_EVENT_MENU, SEND_ORDER } = MethodNames;
+const { CONFIRM_EVENT_MENU, SEND_ORDER, CHANGE_EVENT_STATUS_TO_DELIVERED } = MethodNames;
 
 // HEADER
 Template.eventHeader.helpers({
@@ -61,6 +66,12 @@ Template.eventMenuList.helpers({
     }
     return [];
   },
+  isUserOrderStatusConfirmed() {
+    const eventId = getPathParams("_id");
+    const event = EventCollection.findOne({ _id: eventId });
+    const eventUser = event.users.find(x => x._id === Meteor.userId());
+    return eventUser.orderStatus === CONFIRMED;
+  },
 });
 
 // CONFIRM BTN
@@ -74,9 +85,9 @@ Template.confirmButton.helpers({
 });
 
 Template.confirmButton.events({
-  "click #eventMenuConfirmBtn"(event) {
+  "click #eventMenuConfirmBtn"() {
     const currentUser = this.users.find(x => x._id === Meteor.userId());
-    const menu = currentUser.menu;
+    const { menu } = currentUser;
 
     const updatedMenu = menu.map((x) => {
       const menuId = x._id;
@@ -86,7 +97,12 @@ Template.confirmButton.events({
 
     const eventId = getPathParams("_id");
 
-    API.callMethod(CONFIRM_EVENT_MENU, [eventId, updatedMenu]);
+    API.callMethod(CONFIRM_EVENT_MENU, [eventId, updatedMenu], (err) => {
+      if (err) {
+        return;
+      }
+      success(null, "Menu confirmed!");
+    });
   },
 });
 
@@ -99,8 +115,22 @@ Template.sendOrderButton.helpers({
 });
 
 Template.sendOrderButton.events({
-  "click #eventMenuSendOrderBtn"(event) {
+  "click #eventMenuSendOrderBtn"() {
     const eventId = getPathParams("_id");
-    API.callMethod(SEND_ORDER, [eventId]);
+    API.callMethod(SEND_ORDER, [eventId], (err) => {
+      if (err) {
+        return;
+      }
+      success(null, "Order sent!");
+      // change event status to DELIVERED and just remove event
+      setTimeout(() => {
+        API.callMethod(CHANGE_EVENT_STATUS_TO_DELIVERED, [eventId], (error) => {
+          if (error) {
+            return;
+          }
+          success(null, "Order DELIVERED! Event removed!");
+        });
+      }, 5000);
+    });
   },
 });

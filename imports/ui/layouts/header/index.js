@@ -22,3 +22,7 @@ Template.header.helpers({
   getEventListLength: () => EventCollection.find({}).count(),
   eventList: () => EventCollection.find({}),
 });
+
+Template.header.events({
+  "click .home_btn": () => Router.go("/"),
+});

@@ -26,18 +26,25 @@
 <template name="userGroupAddForm">
     <form id="userGroupAddForm" class="add_group_form add_group_form_hidden">
         <div>
-            <label>Select logo of group:</label>
-            <button class="form_select_logo_btn">+</button>
+            <label style="margin-right: 5px">Logo:</label>
+            <button class="form_select_logo_btn btn btn-success btn-xs">
+                <i class="fa fa-image"></i>
+            </button>
+            <!--<button class="form_select_logo_btn">+</button>-->
         </div>
-        <input id="formFileInput" hidden type="file">
+        <input id="formFileInput" class="hidden" hidden type="file">
         <div class="form_name">
-            <label for="formNameInput" class="form_name_label">Group name:</label>
-            <input id="formNameInput" class="form_name_input" type="text" placeholder="Enter group name" />
+            <label for="formNameInput" class="form_name_label">Name:</label>
+            <input id="formNameInput" class="form-control form_name_input" type="text" placeholder="Enter group name">
+            <!--<input id="formNameInput" class="form_name_input" type="text" placeholder="Enter group name"/>-->
         </div>
         <img class="preview_img_item preview_img_item_hidden" alt="img"/>
         <span class="form_error_text form_error_text_hidden"></span>
         <div class="form_submit_btn_container">
-            <button type="submit" class="form_submit_btn">Create</button>
+            <button type="submit" class="form_submit_btn btn btn-success btn-xs">
+                Create
+            </button>
+            <!--<button type="submit" class="form_submit_btn">Create</button>-->
         </div>
         <span class="form_close_btn">x</span>
     </form>
@@ -45,7 +52,16 @@
 
 <template name="userGroupListItem">
     <li class="list-group-item group_list_item {{#if isGroupSelected}}group_list_item_active{{/if}}">
-        <img src={{logo}} alt="group_img" class="group_logo_item"/>
-        <span class="group_text_item">{{name}}</span>
+        <div>
+            <img src={{logo}} alt="group_img" class="group_logo_item"/>
+            <span class="group_text_item">{{name}}</span>
+        </div>
+        <div class="remove_group_btn_container">
+            {{#if isOwnerGroup}}
+                <button type="button" class="btn btn-danger btn-xs">
+                    <i class="fa fa-trash"></i>
+                </button>
+            {{/if}}
+        </div>
     </li>
 </template>

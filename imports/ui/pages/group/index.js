@@ -1,11 +1,10 @@
 /* eslint no-restricted-globals: 0 */
-
 import "./index.html";
 import "../../components/index";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 // services
-import { API } from "client/services";
+import { API, Notification } from "client/services";
 // own helpers
 import { getPathParams, getGroupOwnerId } from "helpers/index";
 // const
@@ -13,6 +12,7 @@ import { PubAndSubNames, MethodNames } from "constants/index";
 // collections
 import UserGroupCollection from "imports/api/groups/user-group-collection";
 
+const { success } = Notification;
 const { GET_MENU_LIST, GET_USER_LIST } = PubAndSubNames;
 const {
   CREATE_EVENT,
@@ -82,13 +82,23 @@ Template.groupUserList.events({
     event.preventDefault();
     const groupId = getPathParams("_id");
     const user = this;
-    API.callMethod(REMOVE_USER_FROM_GROUP, [groupId, user]);
+    API.callMethod(REMOVE_USER_FROM_GROUP, [groupId, user], (err) => {
+      if (err) {
+        return;
+      }
+      success(null, "User removed!");
+    });
   },
   "click #dropdownItemLink"(event) {
     event.preventDefault();
     const groupId = getPathParams("_id");
     const user = this;
-    API.callMethod(ADD_USER_TO_GROUP, [groupId, user]);
+    API.callMethod(ADD_USER_TO_GROUP, [groupId, user], (err) => {
+      if (err) {
+        return;
+      }
+      success(null, "User added!");
+    });
   },
 });
 
@@ -103,21 +113,24 @@ Template.groupHeader.events({
     if (isErrorClass) {
       event.currentTarget.classList.remove("create_event_input_error");
     }
-    const name = event.target.value; // event name
+  },
+  "submit #createEventForm"(event) {
+    event.preventDefault();
+    const eventInputEl = $(".create_event_input");
+    const eventInputValue = eventInputEl[0].value;
+    if (!eventInputValue) {
+      eventInputEl.addClass("create_event_input_error");
+      return;
+    }
+    const name = $(".create_event_input").val(); // event name
     const groupId = getPathParams("_id");
     API.callMethod(CREATE_EVENT, [groupId, name], (err) => {
       if (err) {
         return;
       }
+      success(null, "Event created!");
       cancelCreationEvent();
     });
-  },
-  "click #createEventBtn"() {
-    const eventInputEl = $(".create_event_input");
-    const eventInputValue = eventInputEl[0].value;
-    if (!eventInputValue) {
-      eventInputEl.addClass("create_event_input_error");
-    }
   },
 });
 
@@ -156,7 +169,12 @@ Template.groupMenuTable.events({
       price: rowChildren[1].querySelector("input").value,
     };
 
-    API.callMethod(CREATE_MENU_ITEM, [groupId, newMenuItem]);
+    API.callMethod(CREATE_MENU_ITEM, [groupId, newMenuItem], (err) => {
+      if (err) {
+        return;
+      }
+      success(null, "Created!");
+    });
     cancelCreationMenuItem();
   },
 });
@@ -209,7 +227,12 @@ Template.menuTableRow.events({
   "click #removeBtn"() {
     const groupId = getPathParams("_id");
     const menuItem = this;
-    API.callMethod(REMOVE_MENU_FROM_GROUP, [groupId, menuItem]);
+    API.callMethod(REMOVE_MENU_FROM_GROUP, [groupId, menuItem], (err) => {
+      if (err) {
+        return;
+      }
+      success(null, "Removed!");
+    });
   },
   "click #saveBtn"() {
     const rowId = this._id;
@@ -221,7 +244,12 @@ Template.menuTableRow.events({
       price: rowChildren[1].querySelector("input").value,
     };
 
-    API.callMethod(UPDATE_MENU_ITEM, [groupId, updatedMenuItem]);
+    API.callMethod(UPDATE_MENU_ITEM, [groupId, updatedMenuItem], (err) => {
+      if (err) {
+        return;
+      }
+      success(null, "Updated!");
+    });
 
     rowChildren.each(function(index) {
       if (index === 2) {

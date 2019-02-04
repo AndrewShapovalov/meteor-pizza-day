@@ -1,4 +1,4 @@
-/* eslint meteor/audit-argument-checks: 0, no-param-reassign: 0 */
+/* eslint meteor/audit-argument-checks: 0, no-param-reassign: 0, consistent-return: 0 */
 import { Email } from "meteor/email";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
@@ -11,44 +11,36 @@ import { MethodNames, EventStatuses, UserOrderStatuses } from "constants/index";
 import UserGroupCollection from "imports/api/groups/user-group-collection";
 import { EventCollection } from "imports/api/event/event-collection";
 
-const { CREATE_EVENT, CONFIRM_EVENT_MENU, SEND_ORDER } = MethodNames;
-const { ORDERING, ORDERED, DELIVERING } = EventStatuses;
+const {
+  CHANGE_EVENT_STATUS_TO_DELIVERED,
+  CREATE_EVENT,
+  CONFIRM_EVENT_MENU,
+  SEND_ORDER,
+} = MethodNames;
+const {
+  ORDERING, ORDERED, DELIVERING, DELIVERED,
+} = EventStatuses;
 const { UNCONFIRMED, CONFIRMED } = UserOrderStatuses;
 
 // own helpers
-const sendEmail = async (to, html, content) => {
-  const from = "pizzadayemail@gmail.com";
-  const subject = "Pizza Event Day!";
-  SSR.compileTemplate("email-content", Assets.getText(html));
-  const htmlForSend = SSR.render("email-content", content);
-  // this.unblock();
-  Email.send({
-    to,
-    from,
-    subject,
-    html: htmlForSend,
-  });
-};
-
 const getOrderedMenu = (event, participantId) => {
-  const menu = event.users.find(x => x._id === participantId).menu;
+  const { menu } = event.users.find(x => x._id === participantId);
   return menu.filter(x => Number(x.amount) > 0);
 };
 
 const getOrderedTotalPrice = menu => menu
-  .reduce((sum, menu) => {
-    const price = Number(menu.price);
-    const amount = Number(menu.amount);
+  .reduce((sum, menuItem) => {
+    const price = Number(menuItem.price);
+    const amount = Number(menuItem.amount);
     return sum + price * amount;
   }, 0)
   .toFixed(2);
 
-const getParticipantEmail = participantId => Meteor.users.findOne({ _id: participantId }).services.google.email;
+const getParticipantEmail = participantId => {
+  return Meteor.users.findOne({ _id: participantId }).services.google.email;
+};
 
 Meteor.methods({
-  logToConsole(msg) {
-    console.log(msg);
-  },
   [CREATE_EVENT](groupId, name) {
     check(groupId, String);
     check(name, String);
@@ -89,6 +81,24 @@ Meteor.methods({
       },
     );
   },
+  [CHANGE_EVENT_STATUS_TO_DELIVERED](eventId) {
+    check(eventId, String);
+
+    if (!this.userId) {
+      throw new Meteor.Error("not-authorized");
+    }
+
+    EventCollection.update(
+      { _id: eventId },
+      {
+        $set: {
+          status: DELIVERED,
+        },
+      },
+    );
+
+    EventCollection.remove({ _id: eventId });
+  },
   [CONFIRM_EVENT_MENU](eventId, updatedMenu) {
     check(eventId, String);
     check(updatedMenu, Array);
@@ -109,7 +119,7 @@ Meteor.methods({
 
     let isAllParticipantsOrdered = false;
 
-    EventCollection.find({ _id: eventId }).forEach(function(event) {
+    EventCollection.find({ _id: eventId }).forEach(function (event) {
       isAllParticipantsOrdered = event.users.every(x => x.orderStatus === CONFIRMED);
     });
 
@@ -117,6 +127,20 @@ Meteor.methods({
     const eventName = event.name;
     const eventCreatorId = event.creatorId;
     const eventCreatedDate = getFriendlyDate(event.createdDate);
+
+    const sendEmail = async (to, html, content) => {
+      this.unblock();
+      const from = "pizzadayemail@gmail.com";
+      const subject = "Pizza Event Day!";
+      SSR.compileTemplate("email-content", Assets.getText(html));
+      const htmlForSend = SSR.render("email-content", content);
+      Email.send({
+        to,
+        from,
+        subject,
+        html: htmlForSend,
+      });
+    };
 
     const sendEmailToEventCreator = async () => {
       const eventCreatorEmail = getParticipantEmail(eventCreatorId);

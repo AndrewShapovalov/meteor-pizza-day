@@ -18,13 +18,15 @@
             <span>Create new event</span>
         </button>
         <div class="create_event_input_container hidden">
-            <input type="text" class="create_event_input" placeholder="Enter event name"/>
-            <button style="margin-right: 5px" id="createEventBtn" type="button" class="btn btn-success btn-xs">
-                <i class="fa fa-check"></i>
-            </button>
-            <button id="cancelEventInputBtn" type="button" class="btn btn-danger btn-xs">
-                <i class="fa fa-times"></i>
-            </button>
+            <form id="createEventForm">
+                <input type="text" class="create_event_input" placeholder="Enter event name"/>
+                <button style="margin-right: 5px" id="createEventBtn" type="submit" class="btn btn-success btn-xs">
+                    <i class="fa fa-check"></i>
+                </button>
+                <button id="cancelEventInputBtn" type="button" class="btn btn-danger btn-xs">
+                    <i class="fa fa-times"></i>
+                </button>
+            </form>
         </div>
     </div>
     <div>
@@ -50,15 +52,19 @@
                         >
                             <i class="fa fa-plus"></i>
                         </button>
-                        <div style="text-align: center;" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <ul style="text-align: center;" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             {{#each userCollection}}
-                                <a style="text-decoration: none; color: black" id="dropdownItemLink" href="#">
-                                    {{name}}
-                                </a>
+                                <li>
+                                    <a style="text-decoration: none; color: black" id="dropdownItemLink" href="#">
+                                        {{name}}
+                                    </a>
+                                </li>
                             {{else}}
-                                <span>None</span>
+                                <li>
+                                    <span>None</span>
+                                </li>
                             {{/each}}
-                        </div>
+                        </ul>
                     </div>
                 {{/if}}
             </div>

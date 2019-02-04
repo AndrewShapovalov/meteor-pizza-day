@@ -73,7 +73,11 @@
                     <span>{{price}}</span>
                 </td>
                 <td class="event_menu_amount">
-                    <input id={{_id}} type="number" class="form-control" value={{amount}} min="0">
+                    {{#if isUserOrderStatusConfirmed}}
+                        <span>{{amount}}</span>
+                    {{else}}
+                        <input id={{_id}} type="number" class="form-control" value={{amount}} min="0">
+                    {{/if}}
                 </td>
             </tr>
         {{/each}}

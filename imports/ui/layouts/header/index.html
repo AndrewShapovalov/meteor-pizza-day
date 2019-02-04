@@ -1,27 +1,34 @@
 <template name="header">
     <header class="header">
         {{#if currentUser}}
-            <div class="btn-group">
-                <button
-                        type="button"
-                        class="btn btn-warning btn-xs dropdown-toggle"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                >
-                    Events
-                    <span class="badge badge-light">{{getEventListLength}}</span>
+            <div>
+                <button type="button" class="home_btn btn btn-primary btn-xs">
+                    <i class="fa fa-home"></i>
                 </button>
-                <ul style="text-align: center" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    {{#each eventList}}
-                        <li class="header-dropdown-list-item">
-                            <a href="{{pathFor route='EVENT'}}">{{name}}</a>
-                        </li>
-                    {{else}}
-                        <span>None</span>
-                    {{/each}}
-                </ul>
+                <div class="btn-group">
+                    <button
+                            type="button"
+                            class="btn btn-warning btn-xs dropdown-toggle"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                    >
+                        Events
+                        <span class="badge badge-light">{{getEventListLength}}</span>
+                    </button>
+                    <ul style="text-align: center" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {{#each eventList}}
+                            <li class="header-dropdown-list-item">
+                                <a href="{{pathFor route='EVENT'}}">{{name}}</a>
+                            </li>
+                        {{else}}
+                            <span>None</span>
+                        {{/each}}
+                    </ul>
+                </div>
             </div>
+        {{else}}
+            <span>Welcome to Pizza Day!</span>
         {{/if}}
         <div class="loginBtnContainer">
             {{> loginButtons}}
