@@ -3,21 +3,20 @@ import { Random } from "meteor/random";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 // const
-import { MethodNames, ErrorReasons } from "constants";
+import { MethodNames, ErrorReasons } from "imports/startup/both/constants";
 // collections
 import UserGroupCollection from "imports/api/groups/user-group-collection";
 import { EventCollection } from "imports/api/event/event-collection";
 // own helpers
-import { getGroupOwnerId } from "helpers";
+import { getGroupOwnerId } from "imports/startup/both/helpers";
 
 const {
-  GET_GROUP_BY_ID,
   CREATE_GROUP,
   REMOVE_GROUP,
   ADD_USER_TO_GROUP,
   CREATE_MENU_ITEM,
   UPDATE_MENU_ITEM,
-  REMOVE_MENU_FROM_GROUP,
+  REMOVE_MENU_ITEM_FROM_GROUP,
   REMOVE_USER_FROM_GROUP,
 } = MethodNames;
 
@@ -39,13 +38,6 @@ const checkMenuItem = (menuItem) => {
 };
 
 Meteor.methods({
-  toConsole(str) {
-    console.log(str);
-  },
-  [GET_GROUP_BY_ID](groupId) {
-    check(groupId, String);
-    return UserGroupCollection.find({ _id: groupId });
-  },
   [REMOVE_GROUP](groupId) {
     check(groupId, String);
 
@@ -164,7 +156,7 @@ Meteor.methods({
       },
     );
   },
-  [REMOVE_MENU_FROM_GROUP](groupId, menuItem) {
+  [REMOVE_MENU_ITEM_FROM_GROUP](groupId, menuItem) {
     check(groupId, String);
     checkMenuItem(menuItem);
     if (!this.userId) {

@@ -6,13 +6,13 @@ import { Template } from "meteor/templating";
 // own helpers
 import {
   getFriendlyDate, getEventStatus, getPathParams, getUserOrderStatus,
-} from "helpers";
+} from "imports/startup/both/helpers";
 // collections
 import { EventCollection } from "imports/api/event/event-collection";
 // services
 import { API, Notification } from "client/services";
 // const
-import { MethodNames, UserOrderStatuses, EventStatuses } from "constants";
+import { MethodNames, UserOrderStatuses, EventStatuses } from "imports/startup/both/constants";
 
 const { success } = Notification;
 
@@ -62,15 +62,15 @@ Template.eventMenuList.helpers({
     const currentUserId = Meteor.userId();
     if (this.users) {
       const user = this.users.find(x => x._id === currentUserId);
-      return user.menu;
+      return user.menu || [];
     }
     return [];
   },
   isUserOrderStatusConfirmed() {
     const eventId = getPathParams("_id");
     const event = EventCollection.findOne({ _id: eventId });
-    const eventUser = event.users.find(x => x._id === Meteor.userId());
-    return eventUser.orderStatus === CONFIRMED;
+    const eventUser = event && event.users.find(x => x._id === Meteor.userId());
+    return eventUser && eventUser.orderStatus === CONFIRMED;
   },
 });
 
@@ -79,7 +79,7 @@ Template.confirmButton.helpers({
   isUserOrderStatusUnconfirmed() {
     if (this && this.users) {
       const currentUser = this.users.find(x => x._id === Meteor.userId());
-      return currentUser.orderStatus === UNCONFIRMED;
+      return currentUser && currentUser.orderStatus === UNCONFIRMED;
     }
   },
 });

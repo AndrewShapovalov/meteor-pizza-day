@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 // const
-import { PubAndSubNames } from "constants/index";
+import { PubAndSubNames } from "imports/startup/both/constants/index";
 import UserGroupCollection from "../user-group-collection";
 
 const { GET_CURRENT_USER_GROUPS } = PubAndSubNames;

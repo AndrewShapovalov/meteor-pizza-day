@@ -4,9 +4,9 @@ import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { SSR } from "meteor/meteorhacks:ssr";
 // helpers
-import { getFriendlyDate } from "helpers";
+import { getFriendlyDate } from "imports/startup/both/helpers";
 // const
-import { MethodNames, EventStatuses, UserOrderStatuses } from "constants/index";
+import { MethodNames, EventStatuses, UserOrderStatuses } from "imports/startup/both/constants/index";
 // collection
 import UserGroupCollection from "imports/api/groups/user-group-collection";
 import { EventCollection } from "imports/api/event/event-collection";
@@ -36,9 +36,7 @@ const getOrderedTotalPrice = menu => menu
   }, 0)
   .toFixed(2);
 
-const getParticipantEmail = participantId => {
-  return Meteor.users.findOne({ _id: participantId }).services.google.email;
-};
+const getParticipantEmail = participantId => Meteor.users.findOne({ _id: participantId }).services.google.email;
 
 Meteor.methods({
   [CREATE_EVENT](groupId, name) {
@@ -119,7 +117,7 @@ Meteor.methods({
 
     let isAllParticipantsOrdered = false;
 
-    EventCollection.find({ _id: eventId }).forEach(function (event) {
+    EventCollection.find({ _id: eventId }).forEach(function(event) {
       isAllParticipantsOrdered = event.users.every(x => x.orderStatus === CONFIRMED);
     });
 

@@ -6,9 +6,9 @@ import { Template } from "meteor/templating";
 // services
 import { API, Notification } from "client/services";
 // own helpers
-import { getPathParams, getGroupOwnerId } from "helpers/index";
+import { getPathParams, getGroupOwnerId } from "imports/startup/both/helpers/index";
 // const
-import { PubAndSubNames, MethodNames } from "constants/index";
+import { PubAndSubNames, MethodNames } from "imports/startup/both/constants/index";
 // collections
 import UserGroupCollection from "imports/api/groups/user-group-collection";
 
@@ -17,7 +17,7 @@ const { GET_MENU_LIST, GET_USER_LIST } = PubAndSubNames;
 const {
   CREATE_EVENT,
   REMOVE_USER_FROM_GROUP,
-  REMOVE_MENU_FROM_GROUP,
+  REMOVE_MENU_ITEM_FROM_GROUP,
   ADD_USER_TO_GROUP,
   CREATE_MENU_ITEM,
   UPDATE_MENU_ITEM,
@@ -227,7 +227,7 @@ Template.menuTableRow.events({
   "click #removeBtn"() {
     const groupId = getPathParams("_id");
     const menuItem = this;
-    API.callMethod(REMOVE_MENU_FROM_GROUP, [groupId, menuItem], (err) => {
+    API.callMethod(REMOVE_MENU_ITEM_FROM_GROUP, [groupId, menuItem], (err) => {
       if (err) {
         return;
       }

@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 // const
-import { PubAndSubNames } from "constants/index";
+import { PubAndSubNames } from "imports/startup/both/constants/index";
 import { EventCollection } from "../event-collection";
 
 const { GET_EVENT_LIST } = PubAndSubNames;

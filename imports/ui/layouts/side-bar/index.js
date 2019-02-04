@@ -6,10 +6,10 @@ import "./index.html";
 // services
 import { API, Notification } from "client/services";
 // own helpers
-import { getPathParams } from "helpers";
+import { getPathParams } from "imports/startup/both/helpers";
 // const
-import { MethodNames } from "constants/index";
-import { PubAndSubNames } from "../../../../constants/index";
+import { MethodNames } from "imports/startup/both/constants/index";
+import { PubAndSubNames } from "../../../startup/both/constants/index";
 // collections
 import UserGroupCollection from "../../../api/groups/user-group-collection";
 
@@ -56,7 +56,7 @@ Template.userGroupAddForm.events({
       return;
     }
     const reader = new FileReader();
-    reader.onload = function ({ target }) {
+    reader.onload = function({ target }) {
       const res = target.result;
       const base64 = `data:${file.type};base64,${btoa(res)}`;
       const previewImgItem = $(".preview_img_item");

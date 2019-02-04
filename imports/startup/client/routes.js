@@ -7,7 +7,7 @@ import "imports/ui/layouts/body/body.js";
 import { EventCollection } from "imports/api/event/event-collection";
 import UserGroupCollection from "imports/api/groups/user-group-collection";
 // const
-import { RouteNames } from "constants/index";
+import { RouteNames } from "imports/startup/both/constants/index";
 
 const {
   EVENT, GROUP, HOME, LOGIN,
