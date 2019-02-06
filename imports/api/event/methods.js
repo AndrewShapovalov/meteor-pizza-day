@@ -6,11 +6,7 @@ import { SSR } from "meteor/meteorhacks:ssr";
 // helpers
 import { getFriendlyDate } from "../../startup/both/helpers";
 // const
-import {
-  MethodNames,
-  EventStatuses,
-  UserOrderStatuses,
-} from "../../startup/both/constants/index";
+import { MethodNames, EventStatuses, UserOrderStatuses } from "../../startup/both/constants/index";
 // collection
 import UserGroupCollection from "../groups/user-group-collection";
 import { EventCollection } from "./event-collection";

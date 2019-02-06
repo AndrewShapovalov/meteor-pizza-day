@@ -15,11 +15,7 @@ import { EventCollection } from "../../../api/event/event-collection";
 // services
 import { API, Notification } from "../../../../client/services";
 // const
-import {
-  MethodNames,
-  UserOrderStatuses,
-  EventStatuses,
-} from "../../../startup/both/constants";
+import { MethodNames, UserOrderStatuses, EventStatuses } from "../../../startup/both/constants";
 
 const { success } = Notification;
 
