@@ -81,7 +81,7 @@ Meteor.methods({
 
     const dataForStorage = {
       name,
-      logo,
+      // logo,
       menu,
       createdAt: new Date(),
       items: [],
