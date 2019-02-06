@@ -1,13 +1,13 @@
 // Import needed templates
 import { Meteor } from "meteor/meteor";
-import "../../../imports/ui/pages/index";
-import "../../../imports/ui/components/index";
-import "../../../imports/ui/layouts/body/body.js";
+import "../../ui/pages/index";
+import "../../ui/components/index";
+import "../../ui/layouts/body/body.js";
 // collections
-import { EventCollection } from "../../../imports/api/event/event-collection";
-import UserGroupCollection from "../../../imports/api/groups/user-group-collection";
+import { EventCollection } from "../../api/event/event-collection";
+import UserGroupCollection from "../../api/groups/user-group-collection";
 // const
-import { RouteNames } from "../../../imports/startup/both/constants/index";
+import { RouteNames } from "../both/constants/index";
 
 const {
   EVENT, GROUP, HOME, LOGIN,

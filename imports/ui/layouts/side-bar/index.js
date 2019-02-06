@@ -5,10 +5,9 @@ import "./index.html";
 // services
 import { API, Notification } from "../../../../client/services";
 // own helpers
-import { getPathParams } from "../../../../imports/startup/both/helpers";
+import { getPathParams } from "../../../startup/both/helpers";
 // const
-import { MethodNames } from "../../../../imports/startup/both/constants/index";
-import { PubAndSubNames } from "../../../startup/both/constants/index";
+import { MethodNames, PubAndSubNames } from "../../../startup/both/constants/index";
 // collections
 import UserGroupCollection from "../../../api/groups/user-group-collection";
 

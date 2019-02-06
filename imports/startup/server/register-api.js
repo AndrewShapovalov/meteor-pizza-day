@@ -1,12 +1,12 @@
 // Register your apis here
 
 // user groups
-import "../../../imports/api/groups/methods";
-import "../../../imports/api/groups/server/publications";
+import "../../api/groups/methods";
+import "../../api/groups/server/publications";
 
 // users
-import "../../../imports/api/users/server/publications";
+import "../../api/users/server/publications";
 
 // events
-import "../../../imports/api/event/methods";
-import "../../../imports/api/event/server/publications";
+import "../../api/event/methods";
+import "../../api/event/server/publications";

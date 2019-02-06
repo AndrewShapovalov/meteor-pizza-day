@@ -1,6 +1,6 @@
 // const
-import { PubAndSubNames } from "../../../../imports/startup/both/constants/index";
 import { Meteor } from "meteor/meteor";
+import { PubAndSubNames } from "../../../startup/both/constants/index";
 
 const { GET_USER_LIST } = PubAndSubNames;
 

@@ -4,16 +4,16 @@ import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { SSR } from "meteor/meteorhacks:ssr";
 // helpers
-import { getFriendlyDate } from "../../../imports/startup/both/helpers";
+import { getFriendlyDate } from "../../startup/both/helpers";
 // const
 import {
   MethodNames,
   EventStatuses,
   UserOrderStatuses,
-} from "../../../imports/startup/both/constants/index";
+} from "../../startup/both/constants/index";
 // collection
-import UserGroupCollection from "../../../imports/api/groups/user-group-collection";
-import { EventCollection } from "../../../imports/api/event/event-collection";
+import UserGroupCollection from "../groups/user-group-collection";
+import { EventCollection } from "./event-collection";
 
 const {
   CHANGE_EVENT_STATUS_TO_DELIVERED,
