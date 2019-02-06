@@ -1,14 +1,13 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-// import {} from "meteor/chrismbeckett:toastr";
 // own
 import "./index.html";
 // services
-import { API, Notification } from "client/services";
+import { API, Notification } from "../../../../client/services";
 // own helpers
-import { getPathParams } from "imports/startup/both/helpers";
+import { getPathParams } from "../../../../imports/startup/both/helpers";
 // const
-import { MethodNames } from "imports/startup/both/constants/index";
+import { MethodNames } from "../../../../imports/startup/both/constants/index";
 import { PubAndSubNames } from "../../../startup/both/constants/index";
 // collections
 import UserGroupCollection from "../../../api/groups/user-group-collection";

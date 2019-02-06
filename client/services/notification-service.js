@@ -1,7 +1,7 @@
 /* eslint no-undef: 0 */
 
 // const
-import { ErrorReasons } from "imports/startup/both/constants";
+import { ErrorReasons } from "../../imports/startup/both/constants";
 
 const { GROUP_NAME_IS_ALREADY_EXISTS } = ErrorReasons;
 

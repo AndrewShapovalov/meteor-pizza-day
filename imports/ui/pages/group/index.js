@@ -4,13 +4,13 @@ import "../../components/index";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 // services
-import { API, Notification } from "client/services";
+import { API, Notification } from "../../../../client/services";
 // own helpers
-import { getPathParams, getGroupOwnerId } from "imports/startup/both/helpers/index";
+import { getPathParams, getGroupOwnerId } from "../../../../imports/startup/both/helpers/index";
 // const
-import { PubAndSubNames, MethodNames } from "imports/startup/both/constants/index";
+import { PubAndSubNames, MethodNames } from "../../../../imports/startup/both/constants/index";
 // collections
-import UserGroupCollection from "imports/api/groups/user-group-collection";
+import UserGroupCollection from "../../../../imports/api/groups/user-group-collection";
 
 const { success } = Notification;
 const { GET_MENU_LIST, GET_USER_LIST } = PubAndSubNames;

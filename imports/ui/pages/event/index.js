@@ -9,13 +9,13 @@ import {
   getEventStatus,
   getPathParams,
   getUserOrderStatus,
-} from "imports/startup/both/helpers";
+} from "../../../../imports/startup/both/helpers";
 // collections
-import { EventCollection } from "imports/api/event/event-collection";
+import { EventCollection } from "../../../../imports/api/event/event-collection";
 // services
-import { API, Notification } from "client/services";
+import { API, Notification } from "../../../../client/services";
 // const
-import { MethodNames, UserOrderStatuses, EventStatuses } from "imports/startup/both/constants";
+import { MethodNames, UserOrderStatuses, EventStatuses } from "../../../../imports/startup/both/constants";
 
 const { success } = Notification;
 

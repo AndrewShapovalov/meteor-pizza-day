@@ -3,9 +3,9 @@ import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
 
 // collections
-import { EventCollection } from "imports/api/event/event-collection";
+import { EventCollection } from "../../../../imports/api/event/event-collection";
 // const
-import { PubAndSubNames } from "imports/startup/both/constants";
+import { PubAndSubNames } from "../../../../imports/startup/both/constants";
 
 const { GET_EVENT_LIST } = PubAndSubNames;
 

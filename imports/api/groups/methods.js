@@ -3,12 +3,12 @@ import { Random } from "meteor/random";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 // const
-import { MethodNames, ErrorReasons } from "imports/startup/both/constants";
+import { MethodNames, ErrorReasons } from "../../../imports/startup/both/constants";
 // collections
-import UserGroupCollection from "imports/api/groups/user-group-collection";
-import { EventCollection } from "imports/api/event/event-collection";
+import UserGroupCollection from "../../../imports/api/groups/user-group-collection";
+import { EventCollection } from "../../../imports/api/event/event-collection";
 // own helpers
-import { getGroupOwnerId } from "imports/startup/both/helpers";
+import { getGroupOwnerId } from "../../../imports/startup/both/helpers";
 
 const {
   CREATE_GROUP,

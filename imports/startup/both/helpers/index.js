@@ -1,6 +1,6 @@
-import UserGroupCollection from "imports/api/groups/user-group-collection";
+import UserGroupCollection from "../../../../imports/api/groups/user-group-collection";
 // const
-import { EventStatuses, UserOrderStatuses } from "imports/startup/both/constants";
+import { EventStatuses, UserOrderStatuses } from "../../../../imports/startup/both/constants";
 
 const { ORDERING, ORDERED, DELIVERING } = EventStatuses;
 const { UNCONFIRMED } = UserOrderStatuses;
