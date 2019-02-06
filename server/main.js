@@ -14,10 +14,10 @@ const createServiceConfiguration = (service, clientId, secret) => {
   ServiceConfiguration.configurations.insert(config);
 };
 
-if (Meteor.settings && Meteor.settings.private && Meteor.settings.private.oAuth) {
+if (Meteor.settings && Meteor.settings.oAuth) {
   const {
     oAuth: { google },
-  } = Meteor.settings.private;
+  } = Meteor.settings;
 
   createServiceConfiguration("google", google.clientId, google.secret);
 }
